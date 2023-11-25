@@ -5,4 +5,16 @@ public class AdminController{
 
     }
 
+    public void modifyFlightPlan() {
+
+    }
+
+    public void selectCrew() {
+
+    }
+
+    public void selectAircraft() {
+        
+    }
+
 }
