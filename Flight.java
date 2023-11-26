@@ -4,7 +4,9 @@ public class Flight{
     private String destination;
     private String origin;
 
-    public Flight(){  
+    public Flight(String dst, String org){  
+        this.destination = dst;
+        this.origin = org;
 
     }
 
