@@ -31,7 +31,7 @@ VALUES
 	('ronair', 2769, 'flyaway'),
     ('davidson5', 2841, 'restricted');
 
-INSERT INTO users (Fullname, Email, Address)
+INSERT INTO users (Fullname, Email, Address, Passkey)
 VALUES
     ('John Doe', 'johndoe2@gmail.com', '3214 Ave, T2N 4V2', 'secretpassword'),
     ('Steve Jobs', 'steveiscool@yahoo.com', '12th Street, T1N 5V7','apple'),
