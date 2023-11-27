@@ -5,10 +5,7 @@ public class Address{
     private String addressLine2;
     private String postalCode;
 
-    public Address(String ad1, String ad2, String pc){  
-        addressLine1 = ad1;
-        addressLine2 = ad2;
-        postalCode = pc;
+    public Address(){  
 
     }
 
@@ -25,7 +22,7 @@ public class Address{
     }
 
     public String toString() {
-        return this.addressLine1 + " " + this.addressLine2 + ", " + this.postalCode;
+        return this.addressLine1 + " " + this.addressLine2 + " " + this.postalCode;
     }
 
 }
