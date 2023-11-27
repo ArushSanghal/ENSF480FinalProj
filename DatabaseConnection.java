@@ -71,6 +71,43 @@ public class DatabaseConnection {
             e.printStackTrace();
         }
     }
+    public void modifyFlightPlan(int flightID, String newOrigin, String newDestination) {
+        try (PreparedStatement preparedStatement = dbConnect.prepareStatement(
+                "UPDATE flights SET Origin = ?, Destination = ? WHERE FlightID = ?")) {
+            preparedStatement.setString(1, newOrigin);
+            preparedStatement.setString(2, newDestination);
+            preparedStatement.setInt(3, flightID);
+            preparedStatement.executeUpdate();
+            dbConnect.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void selectCrew(int flightID, String newCrew) {
+        try (PreparedStatement preparedStatement = dbConnect.prepareStatement(
+                "UPDATE flights SET Crew = ? WHERE FlightID = ?")) {
+            preparedStatement.setString(1, newCrew);
+            preparedStatement.setInt(2, flightID);
+            preparedStatement.executeUpdate();
+            dbConnect.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void selectAircraft(int flightID, String newAircraft) {
+        try (PreparedStatement preparedStatement = dbConnect.prepareStatement(
+                "UPDATE flights SET Aircraft = ? WHERE FlightID = ?")) {
+            preparedStatement.setString(1, newAircraft);
+            preparedStatement.setInt(2, flightID);
+            preparedStatement.executeUpdate();
+            dbConnect.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public void close() {
         try {
