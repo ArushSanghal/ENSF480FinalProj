@@ -5,6 +5,7 @@ public class FlightPlan{
 
     public FlightPlan(){  
 
+        //WHAT IS THE DIFFERENCE BETWEEN FLIGHTPLAN AND AIRCRAFT
     }
 
     public String getAircraft() {
