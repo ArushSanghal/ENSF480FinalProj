@@ -6,7 +6,12 @@ public class Seat{
 
     public Seat(String s, int seat_tot){  
         this.seat = s;
-        seat_aval = seat_tot - 1;
+        if (seat_tot >0 ){
+            seat_aval = seat_tot - 1;
+        }
+        else{
+            throw new Exception("Flight is full");
+        }
 
     }
 
