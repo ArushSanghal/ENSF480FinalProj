@@ -6,8 +6,8 @@ public class AdminController {
         dbConnection = DatabaseConnection.getInstance();
     }
 
-    public void selectCrew(int flightID, String newCrew) {
-        dbConnection.selectCrew(flightID, newCrew);
+    public void selectCrew(int flightID, String newCrew,  int CrewNumber) {
+        dbConnection.selectCrew(flightID, newCrew, CrewNumber);
     }
 
     public void selectAircraft(int flightID, String newAircraft) {
@@ -29,5 +29,5 @@ public class AdminController {
     public void updateFlightCrew(int flightID, String newCrew) {
         dbConnection.updateFlightCrew(flightID, newCrew);
     }
-    
+
 }
