@@ -6,28 +6,21 @@ import java.util.List;
 
 
 public class AirlineController {
-    private DatabaseConnection db;
+    public static void main(String[] args) {
+        // Get an instance of DatabaseConnection using the Singleton pattern
+        DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+
+        // Call the method to get flight details
+        List<String> flightDetailsList = databaseConnection.getFlightDetails();
+
+        // Display the flight details
+        for (String flightDetails : flightDetailsList) {
+            System.out.println(flightDetails);
+        }
 
 
-    public AirlineController(){
-        db = DatabaseConnection.getInstance();
+
     }
-
-    public ResultSet browseAirports(String cityName) {
-        return db.browseAirports(cityName);
-    }
-
-    public ResultSet browseAircrafts(String aircraftNumber) {
-        return db.browseAircrafts(aircraftNumber);
-    }
-
-     public ResultSet browseUsers(String fullName, String email, String address) {
-        return db.browseUsers(fullName,email,address);
-    }
-
-
-    public ResultSet browseAdmins(String username, int adminId) {
-        return db.browseAdmins(username, adminId);
-
 }
-}
+
+

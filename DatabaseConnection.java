@@ -1,9 +1,11 @@
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 public class DatabaseConnection {
@@ -216,6 +218,39 @@ public List<String> extractAdminPasswords() {
 
 
 
+///////////////////////ADDING FUCNTION FOR DISPLAYING FLIGHT DETAILS///////////////////////////////////////////////////////////////////////////////////
+
+
+public List<String> getFlightDetails() {
+    List<String> flightDetailsList = new ArrayList<>();
+
+    try {
+        String query = "SELECT Origin, Destination, SeatPrice, Maxseat, FlightDate, FlightTime FROM flights";
+        try (PreparedStatement preparedStatement = dbConnect.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            while (resultSet.next()) {
+                String origin = resultSet.getString("Origin");
+                String destination = resultSet.getString("Destination");
+                double seatPrice = resultSet.getDouble("SeatPrice");
+                int maxSeat = resultSet.getInt("Maxseat");
+                Date flightDate = resultSet.getDate("FlightDate");
+                Time flightTime = resultSet.getTime("FlightTime");
+
+                String flightDetails = String.format("Origin: %s, Destination: %s, Seat Price: %.2f, Max Seats: %d, Flight Date: %s, Flight Time: %s",
+                        origin, destination, seatPrice, maxSeat, flightDate, flightTime);
+
+                flightDetailsList.add(flightDetails);
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return flightDetailsList;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
