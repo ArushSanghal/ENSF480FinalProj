@@ -50,66 +50,245 @@ public class DatabaseConnection {
 
 
 
-    public ResultSet browseAirports() {
-        ResultSet resultSet = null;
-        try {
-            Statement statement = dbConnect.createStatement();
-            String query = "SELECT DISTINCT Origin, Destination FROM flights";
-            resultSet = statement.executeQuery(query);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return resultSet;
-    }
+    
 
-    public ResultSet browseAircrafts() {
-        ResultSet resultSet = null;
-        try {
-            Statement statement = dbConnect.createStatement();
-            String query = "SELECT DISTINCT Aircraft FROM flights";
-            resultSet = statement.executeQuery(query);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return resultSet;
-    }
-
-    public ResultSet browseUsers() {
-        ResultSet resultSet = null;
-        try {
-            Statement statement = dbConnect.createStatement();
-            String query = "SELECT Fullname, Email, Address FROM users";
-            resultSet = statement.executeQuery(query);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return resultSet;
-    }
-
-    public ResultSet browseAdmins() {
-        ResultSet resultSet = null;
-        try {
-            Statement statement = dbConnect.createStatement();
-            String query = "SELECT Username, AdminID FROM admins";
-            resultSet = statement.executeQuery(query);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return resultSet;
-    }
-
-    public void closeResultSet(ResultSet resultSet) {
-        try {
-            if (resultSet != null) {
-                resultSet.close();
+   
+    
+        public ResultSet browseAirports(String cityName) {
+            ResultSet resultSet = null;
+            try {
+                String query = "SELECT DISTINCT Origin, Destination FROM flights WHERE Origin = ? OR Destination = ?";
+                try (PreparedStatement preparedStatement = dbConnect.prepareStatement(query)) {
+                    preparedStatement.setString(1, cityName);
+                    preparedStatement.setString(2, cityName);
+                    resultSet = preparedStatement.executeQuery();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+            return resultSet;
         }
+    
+        public ResultSet browseAircrafts(String aircraftNumber) {
+            ResultSet resultSet = null;
+            try {
+                String query = "SELECT DISTINCT Aircraft FROM flights WHERE Aircraft = ?";
+                try (PreparedStatement preparedStatement = dbConnect.prepareStatement(query)) {
+                    preparedStatement.setString(1, aircraftNumber);
+                    resultSet = preparedStatement.executeQuery();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return resultSet;
+        }
+    
+        public ResultSet browseUsers(String fullName, String email, String address) {
+            ResultSet resultSet = null;
+            try {
+                String query = "SELECT Fullname, Email, Address FROM users WHERE Fullname = ? OR Email = ? OR Address = ?";
+                try (PreparedStatement preparedStatement = dbConnect.prepareStatement(query)) {
+                    preparedStatement.setString(1, fullName);
+                    preparedStatement.setString(2, email);
+                    preparedStatement.setString(3, address);
+                    resultSet = preparedStatement.executeQuery();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return resultSet;
+        }
+    
+        public ResultSet browseAdmins(String username, int adminId) {
+            ResultSet resultSet = null;
+            try {
+                String query = "SELECT Username, AdminID FROM admins WHERE Username = ? OR AdminID = ?";
+                try (PreparedStatement preparedStatement = dbConnect.prepareStatement(query)) {
+                    preparedStatement.setString(1, username);
+                    preparedStatement.setInt(2, adminId);
+                    resultSet = preparedStatement.executeQuery();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return resultSet;
+        }
+    
+     
+    
+////////////////////////////////////////////////////////////////////////FOR EXTRACTION>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+public List<String> extractUserEmails() {
+    List<String> emails = new ArrayList<>();
+
+    try {
+        String query = "SELECT Email FROM users";
+        try (PreparedStatement preparedStatement = dbConnect.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            while (resultSet.next()) {
+                String email = resultSet.getString("Email");
+                emails.add(email);
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
 
+    return emails;
+}
 
-  
+
+
+
+
+public List<String> extractUserPasskeys() {
+    List<String> passkeys = new ArrayList<>();
+
+    try {
+        String query = "SELECT Passkey FROM users";
+        try (PreparedStatement preparedStatement = dbConnect.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            while (resultSet.next()) {
+                String passkey = resultSet.getString("Passkey");
+                passkeys.add(passkey);
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return passkeys;
+}
+
+
+
+
+
+public List<String> extractAdminUsernames() {
+    List<String> usernames = new ArrayList<>();
+
+    try {
+        String query = "SELECT Username FROM admins";
+        try (PreparedStatement preparedStatement = dbConnect.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            while (resultSet.next()) {
+                String username = resultSet.getString("Username");
+                usernames.add(username);
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return usernames;
+}
+
+
+
+
+
+public List<String> extractAdminPasswords() {
+    List<String> adminPasswords = new ArrayList<>();
+
+    try {
+        String query = "SELECT AdminPass FROM admins";
+        try (PreparedStatement preparedStatement = dbConnect.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            while (resultSet.next()) {
+                String adminPass = resultSet.getString("AdminPass");
+                adminPasswords.add(adminPass);
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return adminPasswords;
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////END OF EXTRACTION\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
