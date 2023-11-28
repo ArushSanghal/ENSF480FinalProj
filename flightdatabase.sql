@@ -15,7 +15,7 @@ CREATE TABLE flights (
     FlightID INT AUTO_INCREMENT PRIMARY KEY,
     Origin VARCHAR(50) NOT NULL,
     Destination VARCHAR(50) NOT NULL,
-    SeatPrice DECIMAL(10, 2) NOT NULL,
+    SeatPrice DECIMAL(10, 2) DEFAULT 100.00,
     Aircraft VARCHAR(50) NOT NULL,
     CrewID INT NOT NULL,
     Maxseat INT,

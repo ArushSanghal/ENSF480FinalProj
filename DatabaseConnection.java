@@ -71,12 +71,11 @@ public class DatabaseConnection {
         }
     }
 
-    public void selectCrew(int flightID, String crewName, int CrewNumber) {
+    public void selectCrew(String crewName, int CrewNumber) {
         try (PreparedStatement preparedStatement = dbConnect.prepareStatement(
-                "UPDATE flights SET Crew = ?, CrewNumber = ? WHERE FlightID = ?")) {
-            preparedStatement.setString(1, crewName);
-            preparedStatement.setInt(2, CrewNumber);
-            preparedStatement.setInt(3, flightID);
+                "UPDATE crew SET CrewNumber = ? WHERE CrewName = ?")) {
+            preparedStatement.setString(2, crewName);
+            preparedStatement.setInt(1, CrewNumber);
             preparedStatement.executeUpdate();
             dbConnect.commit();
         } catch (SQLException e) {
@@ -96,14 +95,16 @@ public class DatabaseConnection {
         }
     }
 
-    public void addFlight(int flightID, String origin, String destination, String crew, String aircraft) {
+    public void addFlight(String origin, String destination, double seatPrice, String aircraft, int crewID, int maxSeat) {
         try (PreparedStatement preparedStatement = dbConnect.prepareStatement(
-                "INSERT INTO flights (FlightID, Origin, Destination, CrewID, Aircraft) VALUES (?, ?, ?, ?, ?)")) {
-            preparedStatement.setInt(1, flightID);
-            preparedStatement.setString(2, origin);
-            preparedStatement.setString(3, destination);
-            preparedStatement.setString(4, crew);
-            preparedStatement.setString(5, aircraft);
+                "INSERT INTO flights (Origin, Destination, SeatPrice, Aircraft, CrewID, MaxSeat) VALUES (?, ?, ?, ?, ?, ?)")) {
+            // preparedStatement.setInt(1, flightID);
+            preparedStatement.setString(1, origin);
+            preparedStatement.setString(2, destination);
+            preparedStatement.setDouble(3, seatPrice);
+            preparedStatement.setString(4, aircraft);
+            preparedStatement.setInt(5, crewID);
+            preparedStatement.setInt(6, maxSeat);
             preparedStatement.executeUpdate();
             dbConnect.commit();
         } catch (SQLException e) {
@@ -235,6 +236,4 @@ public class DatabaseConnection {
             e.printStackTrace();
         }
     }
-
-    
-}
+    }
