@@ -60,6 +60,3 @@ VALUES
     ('Montreal', 'Calgary', 275.00, 'Aircraft13', 'Crew13', 95,'2023-12-12', '12:12:00'),
     ('Edmonton', 'Calgary', 125.00, 'Aircraft14', 'Crew14', 75,'2023-12-05', '10:10:00'),
     ('Winnipeg', 'Toronto', 250.00, 'Aircraft15', 'Crew15', 100,'2023-12-03', '09:00:00');
-
-
-    

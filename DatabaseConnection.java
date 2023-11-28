@@ -22,7 +22,7 @@ public class DatabaseConnection {
     }
     public void createConnection() {
         try {
-            dbConnect = DriverManager.getConnection("jdbc:mysql://localhost:3306/FLIGHTDATABASE", "oop", "password");
+            dbConnect = DriverManager.getConnection("jdbc:mysql://localhost:3306/FLIGHTDATABASE", "root", "password");
             dbConnect.setAutoCommit(false);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -247,6 +247,7 @@ public void addFlight(String origin, String destination, double seatPrice, Strin
                 preparedStatement.setString(7, flightDate);
                 preparedStatement.setString(8, flightTime);
                 preparedStatement.executeUpdate();
+                dbConnect.commit();
             }
         } catch (SQLException e) {
             e.printStackTrace();
