@@ -52,7 +52,6 @@ public class DatabaseConnection {
         }
     }
 
-
     public void insertPassengers(int FlightID, String PassengerName, int SeatNumber, int UserID) {
         if (dbConnect == null) {
             System.out.println("Connection not established.");
@@ -71,26 +70,16 @@ public class DatabaseConnection {
             e.printStackTrace();
         }
     }
-    public void modifyFlightPlan(int flightID, String newOrigin, String newDestination) {
+
+    public void selectCrew(int flightID, String crewName, int CrewNumber) {
         try (PreparedStatement preparedStatement = dbConnect.prepareStatement(
-                "UPDATE flights SET Origin = ?, Destination = ? WHERE FlightID = ?")) {
-            preparedStatement.setString(1, newOrigin);
-            preparedStatement.setString(2, newDestination);
+                "UPDATE flights SET Crew = ?, CrewNumber = ? WHERE FlightID = ?")) {
+            preparedStatement.setString(1, crewName);
+            preparedStatement.setInt(2, CrewNumber);
             preparedStatement.setInt(3, flightID);
             preparedStatement.executeUpdate();
             dbConnect.commit();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void selectCrew(int flightID, String newCrew) {
-        try (PreparedStatement preparedStatement = dbConnect.prepareStatement(
-                "UPDATE flights SET Crew = ? WHERE FlightID = ?")) {
-            preparedStatement.setString(1, newCrew);
-            preparedStatement.setInt(2, flightID);
-            preparedStatement.executeUpdate();
-            dbConnect.commit();
+            System.out.println("Crew member set successfully for flight ID: " + flightID);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -108,6 +97,119 @@ public class DatabaseConnection {
         }
     }
 
+    public void addFlight(int flightID, String origin, String destination, String crew, String aircraft) {
+        try (PreparedStatement preparedStatement = dbConnect.prepareStatement(
+                "INSERT INTO flights (FlightID, Origin, Destination, Crew, Aircraft) VALUES (?, ?, ?, ?, ?)")) {
+            preparedStatement.setInt(1, flightID);
+            preparedStatement.setString(2, origin);
+            preparedStatement.setString(3, destination);
+            preparedStatement.setString(4, crew);
+            preparedStatement.setString(5, aircraft);
+            preparedStatement.executeUpdate();
+            dbConnect.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void removeFlight(int flightID) {
+        try (PreparedStatement preparedStatement = dbConnect.prepareStatement(
+                "DELETE FROM flights WHERE FlightID = ?")) {
+            preparedStatement.setInt(1, flightID);
+            preparedStatement.executeUpdate();
+            dbConnect.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateFlightCrew(int flightID, String newCrew) {
+        if (dbConnect == null) {
+            System.out.println("Connection not established.");
+            return;
+        }
+
+        try {
+            PreparedStatement preparedStatement = dbConnect.prepareStatement(
+                    "UPDATE flights SET Crew = ? WHERE FlightID = ?");
+            preparedStatement.setString(1, newCrew);
+            preparedStatement.setInt(2, flightID);
+            preparedStatement.executeUpdate();
+            dbConnect.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateFlightOrigin(int flightID, String newOrigin) {
+        if (dbConnect == null) {
+            System.out.println("Connection not established.");
+            return;
+        }
+
+        try {
+            PreparedStatement preparedStatement = dbConnect.prepareStatement(
+                    "UPDATE flights SET Origin = ? WHERE FlightID = ?");
+            preparedStatement.setString(1, newOrigin);
+            preparedStatement.setInt(2, flightID);
+            preparedStatement.executeUpdate();
+            dbConnect.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateFlightDestination(int flightID, String newDestination) {
+        if (dbConnect == null) {
+            System.out.println("Connection not established.");
+            return;
+        }
+
+        try {
+            PreparedStatement preparedStatement = dbConnect.prepareStatement(
+                    "UPDATE flights SET Destination = ? WHERE FlightID = ?");
+            preparedStatement.setString(1, newDestination);
+            preparedStatement.setInt(2, flightID);
+            preparedStatement.executeUpdate();
+            dbConnect.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateFlightSeatPrice(int flightID, double newSeatPrice) {
+        if (dbConnect == null) {
+            System.out.println("Connection not established.");
+            return;
+        }
+
+        try {
+            PreparedStatement preparedStatement = dbConnect.prepareStatement(
+                    "UPDATE flights SET SeatPrice = ? WHERE FlightID = ?");
+            preparedStatement.setDouble(1, newSeatPrice);
+            preparedStatement.setInt(2, flightID);
+            preparedStatement.executeUpdate();
+            dbConnect.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateFlight(int flightID, String attribute, String newValue) {
+        switch (attribute.toLowerCase()) {
+            case "origin":
+                updateFlightOrigin(flightID, newValue);
+                break;
+            case "destination":
+                updateFlightDestination(flightID, newValue);
+                break;
+            case "seatprice":
+                updateFlightSeatPrice(flightID, Double.parseDouble(newValue));
+                break;
+            default:
+                System.out.println("Invalid attribute.");
+        }
+    }
 
     public void close() {
         try {
