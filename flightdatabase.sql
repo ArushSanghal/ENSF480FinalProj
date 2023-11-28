@@ -43,25 +43,7 @@ VALUES
     
     
 
-INSERT INTO flights (Origin, Destination, SeatPrice, Aircraft, Crew, Maxseat)
-VALUES
-    ('Calgary', 'Edmonton', 100.00, 'Aircraft1', 'Crew1', 75),
-    ('Calgary', 'Vancouver', 200.00, 'Aircraft2', 'Crew2', 60),
-    ('Edmonton', 'Montreal', 250.00, 'Aircraft3', 'Crew3', 80),
-    ('Ottawa', 'Quebec City', 125.00, 'Aircraft4', 'Crew4', 75),
-    ('Saskatoon', 'Toronto', 350.00, 'Aircraft5', 'Crew5', 100),
-    ('Toronto', 'Vancouver', 400.00, 'Aircraft6', 'Crew6', 95),
-    ('Vancouver', 'Toronto', 425.00, 'Aircraft7', 'Crew7', 90),
-    ('Calgary', 'Toronto', 425.00, 'Aircraft8', 'Crew8', 85),
-    ('Winnipeg', 'Edmonton', 225.00, 'Aircraft9', 'Crew9', 55),
-    ('Montreal', 'Vancouver', 335.00, 'Aircraft10', 'Crew10', 70),
-    ('Vancouver', 'Charlottetown', 435.00, 'Aircraft11', 'Crew11', 65),
-    ('Charlottetown', 'Toronto', 250.00, 'Aircraft12', 'Crew12', 50),
-    ('Montreal', 'Calgary', 275.00, 'Aircraft13', 'Crew13', 95),
-    ('Edmonton', 'Calgary', 125.00, 'Aircraft14', 'Crew14', 75),
-    ('Winnipeg', 'Toronto', 250.00, 'Aircraft15', 'Crew15', 100);
-
-    INSERT INTO flights (Origin, Destination, SeatPrice, Aircraft, Crew, Maxseat, FlightDate, FlightTime)
+INSERT INTO flights (Origin, Destination, SeatPrice, Aircraft, Crew, Maxseat, FlightDate, FlightTime)
 VALUES
     ('Calgary', 'Edmonton', 100.00, 'Aircraft1', 'Crew1', 75, '2023-12-02', '12:30:00'),
     ('Calgary', 'Vancouver', 200.00, 'Aircraft2', 'Crew2', 60, '2023-12-04', '12:35:00'),
