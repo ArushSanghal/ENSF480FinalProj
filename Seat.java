@@ -55,5 +55,18 @@ public class Seat{
     public int seatRefunded(int seats){
         return seats +1;
     }
+
+    public boolean seatChecker(String seatIDInput){
+        db = new DatabaseConnection();
+
+        List<String> seatsAvail = db.extractSeatID();
+
+        if (seatsAvail.contains(seatIDInput)){
+            System.out.println("Seat Taken");
+            return false;
+        }
+        System.out.println("Seat Booked");
+        return true;
+    }
     
 }
