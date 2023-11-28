@@ -1,18 +1,8 @@
+public class FlightPlan {
+    public static void main(String[] args) {
+        DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
-public class FlightPlan{
-
-    private String aircraft;
-
-    public FlightPlan(){  
-
-        //WHAT IS THE DIFFERENCE BETWEEN FLIGHTPLAN AND AIRCRAFT
-    }
-
-    public String getAircraft() {
-        return this.aircraft;
-    }
-
-    public void setAircraft(String newAircraft){
-        this.aircraft = newAircraft;
+        // Example: Adding a new flight
+        databaseConnection.addFlight("Calgary", "Vancouver", 300.00, "Aircraft16", "Crew16", 80, "2023-12-15", "14:30:00");
     }
 }

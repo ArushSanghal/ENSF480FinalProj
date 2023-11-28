@@ -56,65 +56,42 @@ public class DatabaseConnection {
 
    
     
-        public ResultSet browseAirports(String cityName) {
-            ResultSet resultSet = null;
-            try {
-                String query = "SELECT DISTINCT Origin, Destination FROM flights WHERE Origin = ? OR Destination = ?";
-                try (PreparedStatement preparedStatement = dbConnect.prepareStatement(query)) {
-                    preparedStatement.setString(1, cityName);
-                    preparedStatement.setString(2, cityName);
-                    resultSet = preparedStatement.executeQuery();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
+
+
+
+
+
+
+
+
+    public ResultSet browseAllAirports() {
+        return executeQuery("SELECT DISTINCT Origin, Destination FROM flights");
+    }
+
+    public ResultSet browseAllAircrafts() {
+        return executeQuery("SELECT DISTINCT Aircraft FROM flights");
+    }
+
+    public ResultSet browseAllUsers() {
+        return executeQuery("SELECT Fullname, Email, Address FROM users");
+    }
+
+    public ResultSet browseAllAdmins() {
+        return executeQuery("SELECT Username, AdminID FROM admins");
+    }
+
+    private ResultSet executeQuery(String query) {
+        ResultSet resultSet = null;
+        try {
+            try (PreparedStatement preparedStatement = dbConnect.prepareStatement(query)) {
+                resultSet = preparedStatement.executeQuery();
             }
-            return resultSet;
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+        return resultSet;
+    }
     
-        public ResultSet browseAircrafts(String aircraftNumber) {
-            ResultSet resultSet = null;
-            try {
-                String query = "SELECT DISTINCT Aircraft FROM flights WHERE Aircraft = ?";
-                try (PreparedStatement preparedStatement = dbConnect.prepareStatement(query)) {
-                    preparedStatement.setString(1, aircraftNumber);
-                    resultSet = preparedStatement.executeQuery();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            return resultSet;
-        }
-    
-        public ResultSet browseUsers(String fullName, String email, String address) {
-            ResultSet resultSet = null;
-            try {
-                String query = "SELECT Fullname, Email, Address FROM users WHERE Fullname = ? OR Email = ? OR Address = ?";
-                try (PreparedStatement preparedStatement = dbConnect.prepareStatement(query)) {
-                    preparedStatement.setString(1, fullName);
-                    preparedStatement.setString(2, email);
-                    preparedStatement.setString(3, address);
-                    resultSet = preparedStatement.executeQuery();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            return resultSet;
-        }
-    
-        public ResultSet browseAdmins(String username, int adminId) {
-            ResultSet resultSet = null;
-            try {
-                String query = "SELECT Username, AdminID FROM admins WHERE Username = ? OR AdminID = ?";
-                try (PreparedStatement preparedStatement = dbConnect.prepareStatement(query)) {
-                    preparedStatement.setString(1, username);
-                    preparedStatement.setInt(2, adminId);
-                    resultSet = preparedStatement.executeQuery();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            return resultSet;
-        }
     
      
     
@@ -252,11 +229,34 @@ public List<String> getFlightDetails() {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+//////////////////////////////////////////////////////////////////////ADD FLIGHT FOR ADMIN////////////////////////////////////////////////
+
+
+public void addFlight(String origin, String destination, double seatPrice, String aircraft,
+                          String crew, int maxSeats, String flightDate, String flightTime) {
+        try {
+            String query = "INSERT INTO flights (Origin, Destination, SeatPrice, Aircraft, Crew, Maxseat, FlightDate, FlightTime) " +
+                           "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            try (PreparedStatement preparedStatement = dbConnect.prepareStatement(query)) {
+                preparedStatement.setString(1, origin);
+                preparedStatement.setString(2, destination);
+                preparedStatement.setDouble(3, seatPrice);
+                preparedStatement.setString(4, aircraft);
+                preparedStatement.setString(5, crew);
+                preparedStatement.setInt(6, maxSeats);
+                preparedStatement.setString(7, flightDate);
+                preparedStatement.setString(8, flightTime);
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 
 
-
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
