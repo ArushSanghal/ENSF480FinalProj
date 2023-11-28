@@ -2,6 +2,15 @@ DROP DATABASE IF EXISTS FLIGHTDATABASE;
 CREATE DATABASE FLIGHTDATABASE; 
 USE FLIGHTDATABASE;
 
+CREATE TABLE crew (
+    CrewID INT AUTO_INCREMENT PRIMARY KEY,
+    Email VARCHAR(50) NOT NULL,
+    Pass VARCHAR(50) NOT NULL,
+    CrewName VARCHAR(50) NOT NULL,
+    CrewRole VARCHAR(50) NOT NULL,
+    CrewNumber INT NOT NULL
+);
+
 CREATE TABLE flights (
     FlightID INT AUTO_INCREMENT PRIMARY KEY,
     Origin VARCHAR(50) NOT NULL,
@@ -37,19 +46,10 @@ CREATE TABLE passengers (
     FOREIGN KEY (UserID) REFERENCES users(UserID)
 );
 
-CREATE TABLE crew (
-    CrewID INT AUTO_INCREMENT PRIMARY KEY,
-    Email VARCHAR(50) NOT NULL,
-    Pass VARCHAR(50) NOT NULL,
-    CrewName VARCHAR(50) NOT NULL,
-    CrewRole VARCHAR(50) NOT NULL,
-    CrewNumber INT NOT NULL
-);
-
 INSERT INTO crew (Email, Pass, CrewName, CrewRole, CrewNumber)
 VALUES
 	('johnwi@gmail.com', 'john143','John Williams', 'Pilot', 1),
-    ('', '','', 'Flight Attendant', 1),
+    ('', '', '', 'Flight Attendant', 1),
     ('', '', '', 'Co-Pilot', 1),
 	('', '', '','Pilot', 2),
     ('', '', '', 'Flight Attendant', 2),
@@ -84,7 +84,7 @@ VALUES
     ('Thomas Brown', 'thomasbrown@gmail.com', '120 Bremner Blvd, M5J 0A8','brownthomas');
     
 
-INSERT INTO flights (Origin, Destination, SeatPrice, Aircraft, Crew, Maxseat)
+INSERT INTO flights (Origin, Destination, SeatPrice, Aircraft, CrewID, Maxseat)
 VALUES
     ('Calgary', 'Edmonton', 100.00, 'Aircraft1', 1, 75),
     ('Calgary', 'Vancouver', 200.00, 'Aircraft2', 2, 60),

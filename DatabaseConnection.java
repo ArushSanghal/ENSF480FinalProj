@@ -79,7 +79,6 @@ public class DatabaseConnection {
             preparedStatement.setInt(3, flightID);
             preparedStatement.executeUpdate();
             dbConnect.commit();
-            System.out.println("Crew member set successfully for flight ID: " + flightID);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -99,7 +98,7 @@ public class DatabaseConnection {
 
     public void addFlight(int flightID, String origin, String destination, String crew, String aircraft) {
         try (PreparedStatement preparedStatement = dbConnect.prepareStatement(
-                "INSERT INTO flights (FlightID, Origin, Destination, Crew, Aircraft) VALUES (?, ?, ?, ?, ?)")) {
+                "INSERT INTO flights (FlightID, Origin, Destination, CrewID, Aircraft) VALUES (?, ?, ?, ?, ?)")) {
             preparedStatement.setInt(1, flightID);
             preparedStatement.setString(2, origin);
             preparedStatement.setString(3, destination);
@@ -131,7 +130,7 @@ public class DatabaseConnection {
 
         try {
             PreparedStatement preparedStatement = dbConnect.prepareStatement(
-                    "UPDATE flights SET Crew = ? WHERE FlightID = ?");
+                    "UPDATE flights SET CrewID = ? WHERE FlightID = ?");
             preparedStatement.setString(1, newCrew);
             preparedStatement.setInt(2, flightID);
             preparedStatement.executeUpdate();
