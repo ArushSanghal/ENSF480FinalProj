@@ -5,20 +5,6 @@ import java.sql.SQLException;
 
 public class Crew {
 
-    private String role;
-
-    public Crew(String role) {
-        this.role = role;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
     public void browsePassengers(int flightID) {
         DatabaseConnection dbConnection = DatabaseConnection.getInstance();
         Connection connection = null;
@@ -40,6 +26,34 @@ public class Crew {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            dbConnection.closeResources(resultSet, preparedStatement, connection);
+        }
+    }
+
+    public boolean crewLogin(String email, String pass) {
+        DatabaseConnection dbConnection = DatabaseConnection.getInstance();
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = dbConnection.getConnection();
+            String query = "SELECT * FROM crew WHERE Email = ? AND Pass = ?";
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, email);
+            preparedStatement.setString(2, pass);
+            resultSet = preparedStatement.executeQuery();
+
+            // If there is a matching crew member, allow login
+            if (resultSet.next()) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         } finally {
             dbConnection.closeResources(resultSet, preparedStatement, connection);
         }
