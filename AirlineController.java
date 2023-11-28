@@ -22,7 +22,7 @@ public class AirlineController {
                     System.out.println("Username: " + resultSet.getString("Username"));
                     System.out.println("AdminID: " + resultSet.getInt("AdminID"));
                 }
-            }
+            } 
             System.out.println("-----------------------------");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -31,6 +31,7 @@ public class AirlineController {
     
     public static void main(String[] args) {
         DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+        databaseConnection.createConnection();
 
 
         List<String> flightDetailsList = databaseConnection.getFlightDetails();
@@ -38,6 +39,8 @@ public class AirlineController {
         for (String flightDetails : flightDetailsList) {
             System.out.println(flightDetails);
         }
+
+        databaseConnection.close();
 
 
         ResultSet allAirportsResultSet = databaseConnection.browseAllAirports();
@@ -51,6 +54,12 @@ public class AirlineController {
 
         ResultSet allAdminsResultSet = databaseConnection.browseAllAdmins();
         processResultSet(allAdminsResultSet, "All Admin Results");
+
+
+
+       
+
+
 
 
 
