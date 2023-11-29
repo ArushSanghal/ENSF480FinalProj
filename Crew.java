@@ -5,11 +5,12 @@ import java.sql.SQLException;
 
 public class Crew {
 
-    public void browsePassengers(int flightID) {
+    public static String browsePassengers(int flightID) {
         DatabaseConnection dbConnection = DatabaseConnection.getInstance();
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
+        String result = "";
 
         try {
             connection = dbConnection.getConnection();
@@ -22,16 +23,20 @@ public class Crew {
                 String passengerName = resultSet.getString("PassengerName");
                 int seatNumber = resultSet.getInt("SeatNumber");
 
-                System.out.println("Passenger: " + passengerName + ", Seat Number: " + seatNumber);
+                
+                result +="Passenger: " + passengerName + ", Seat Number: " + seatNumber +"\n";
             }
+            return result;
         } catch (SQLException e) {
             e.printStackTrace();
+            return "SQL Error";
         } finally {
             dbConnection.closeResources(resultSet, preparedStatement, connection);
+            
         }
     }
 
-    public boolean crewLogin(String email, String pass) {
+    public static boolean crewLogin(String email, String pass) {
         DatabaseConnection dbConnection = DatabaseConnection.getInstance();
         Connection connection = null;
         PreparedStatement preparedStatement = null;

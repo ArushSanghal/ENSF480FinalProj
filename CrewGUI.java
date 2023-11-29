@@ -1,4 +1,4 @@
-package GUI;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -11,24 +11,45 @@ import java.util.*;
 
 public class CrewGUI extends JFrame implements ActionListener, MouseListener{
     private JLabel definition;
-    private JTextArea textArea = new JTextArea("PASSENGERS\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ngS\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\n");
+    private JTextArea textArea;
+    private JTextField userText;
+    private JLabel userLabel;
+    private JLabel passLabel;
+    private JTextField passText;
 
         public CrewGUI(){
         super("Crew");
         setupGUI();
-        setSize(300,200);
+        setSize(400,200);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
-        setLocationRelativeTo(null);    
+        setLocationRelativeTo(null);
         addMouseListener(this);
         
     }
      public void setupGUI(){
 
+
         
         
-        definition = new JLabel("Click to View Passengers:");
+        userLabel = new JLabel("Email");
+        userLabel.setBounds(20, 40, 80, 25);
+        this.add(userLabel);
+
+        userText = new JTextField(20);
+        userText.setBounds(120, 40, 165, 25);
+        this.add(userText);
         
-        JButton button = new JButton("Browse Passengers");
+        passLabel = new JLabel("Password");
+        passLabel.setBounds(20, 70, 80, 25);
+        this.add(passLabel);
+
+        passText = new JTextField(20);
+        passText.setBounds(120, 70, 165, 25);
+        this.add(passText);
+        
+        definition = new JLabel("Login to View Passengers on your current flight:");
+        
+        JButton button = new JButton("Login");
         button.addActionListener(this);
         
         JPanel headerPanel = new JPanel();
@@ -51,14 +72,27 @@ public class CrewGUI extends JFrame implements ActionListener, MouseListener{
 }
 
     public void actionPerformed(ActionEvent event){
+        
+        if (User.loginCrew(userText.getText(), passText.getText())) {
+        DatabaseConnection dbConnection = DatabaseConnection.getInstance();
+        dbConnection.createConnection();
+        int flightID = dbConnection.getCrewFlightID(userText.getText());
+        String textString = Crew.browsePassengers(flightID);
+        textArea = new JTextArea(textString);
         textArea.setEditable(false);  
         textArea.setLineWrap(true);  
         textArea.setWrapStyleWord(true); 
         JScrollPane scroll = new JScrollPane(textArea);
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         scroll.setPreferredSize( new Dimension( 300, 400 ) );
-        JOptionPane.showMessageDialog(rootPane, scroll, "Passengers",  
+        JOptionPane.showMessageDialog(rootPane, scroll, "Passengers on flight " + flightID + ":",  
                                                         JOptionPane.DEFAULT_OPTION);
+        }
+        else {
+            JOptionPane.showMessageDialog(rootPane, "Please Enter Valid Credentials", "Login Failed",  
+            JOptionPane.DEFAULT_OPTION);
+        }
+        
     }
     
     public void mouseEntered(MouseEvent event){
@@ -66,6 +100,7 @@ public class CrewGUI extends JFrame implements ActionListener, MouseListener{
     }
 
     public void mouseExited(MouseEvent event){
+
     }
 
     public void mousePressed(MouseEvent event){

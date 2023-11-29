@@ -5,14 +5,14 @@ public class User{
 
     private String fullName;
     private String email;
-    private Address address;
+    private String address;
     private String userPassword;
     private String adminUsername;
     private int adminID;
     private String adminPassword;
-    private DatabaseConnection db;
+    private static DatabaseConnection db;
 
-    public User(String fn, String em, Address ad, String pass){  
+    public User(String fn, String em, String ad, String pass){  
         this.fullName = fn;
         this.email = em;
         this.address = ad;
@@ -32,13 +32,13 @@ public class User{
     }
 
     public void regUser(){
-        db = new DatabaseConnection();
+        db = DatabaseConnection.getInstance();
         db.insertUser(fullName, email, address, userPassword);
     }
 
-    public boolean loginUser(String inputEmail, String inputPass){
-        db = new DatabaseConnection();
-
+    public static boolean loginUser(String inputEmail, String inputPass){
+        db = DatabaseConnection.getInstance();
+        db.createConnection();
         List<String> emailList = db.extractUserEmails();
         List<String> passwordList = db.extractUserPasskeys();
 
@@ -48,14 +48,30 @@ public class User{
         }
         System.out.println("User not found");
         return false;
+
     }
 
-    public boolean loginAdmin(String inputUsername, String inputPass){
+    public static boolean loginAdmin(String inputUsername, String inputPass){
 
-        db = new DatabaseConnection();
-
+        db = DatabaseConnection.getInstance();
+        db.createConnection();
         List<String> usernameList = db.extractAdminUsernames();
         List<String> passwordList = db.extractAdminPasswords();
+        
+        if (usernameList.contains(inputUsername) && passwordList.contains(inputPass)){
+            System.out.println("User found");
+            return true;
+        }
+        System.out.println("User not found");
+        return false;
+    }
+
+        public static boolean loginCrew(String inputUsername, String inputPass){
+
+        db = DatabaseConnection.getInstance();
+        db.createConnection();
+        List<String> usernameList = db.extractCrewUsernames();
+        List<String> passwordList = db.extractCrewPasswords();
         
         if (usernameList.contains(inputUsername) && passwordList.contains(inputPass)){
             System.out.println("User found");

@@ -1,4 +1,4 @@
-package GUI;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -9,11 +9,11 @@ import java.awt.event.*;
 import java.awt.FlowLayout;
 import java.util.*;
 
-public class UserGUI extends JFrame implements ActionListener, MouseListener{
+public class Payforit extends JFrame implements ActionListener, MouseListener{
     private JLabel definition;
 
-        public UserGUI(){
-        super("User");
+        public Payforit(){
+        super("Payment");
         setupGUI();
         setSize(900,600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
@@ -25,9 +25,9 @@ public class UserGUI extends JFrame implements ActionListener, MouseListener{
 
         
         
-        definition = new JLabel("Enter Login Info:");
+        definition = new JLabel("Enter Payment Info:");
         
-        JButton button = new JButton("Login");
+        JButton button = new JButton("Confirm");
         button.addActionListener(this);
         
         JPanel headerPanel = new JPanel();
@@ -73,7 +73,7 @@ public class UserGUI extends JFrame implements ActionListener, MouseListener{
     public static void main(String[] args) {
         
         EventQueue.invokeLater(() -> {
-            new UserGUI().setVisible(true);        
+            new Payforit().setVisible(true);        
         });
     }
 

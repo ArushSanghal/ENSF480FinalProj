@@ -1,4 +1,4 @@
-package GUI;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -9,11 +9,17 @@ import java.awt.event.*;
 import java.awt.FlowLayout;
 import java.util.*;
 
-public class Payforit extends JFrame implements ActionListener, MouseListener{
+public class AdminGUI extends JFrame implements ActionListener, MouseListener{
     private JLabel definition;
+    private JTextField userText;
+    private JLabel userLabel;
+    private JLabel passLabel;
+    private JTextField passText;
+    
 
-        public Payforit(){
-        super("Payment");
+
+        public AdminGUI(){
+        super("Admin");
         setupGUI();
         setSize(900,600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
@@ -23,11 +29,26 @@ public class Payforit extends JFrame implements ActionListener, MouseListener{
     }
      public void setupGUI(){
 
+        userLabel = new JLabel("Enter Your Email:");
+        userLabel.setBounds(20, 40, 125, 25);
+        this.add(userLabel);
+
+        userText = new JTextField(20);
+        userText.setBounds(180, 40, 165, 25);
+        this.add(userText);
+        
+        passLabel = new JLabel("Enter Your Password:");
+        passLabel.setBounds(20, 70, 125, 25);
+        this.add(passLabel);
+
+        passText = new JTextField(20);
+        passText.setBounds(180, 70, 165, 25);
+        this.add(passText);
         
         
-        definition = new JLabel("Enter Payment Info:");
+        definition = new JLabel("Enter Login Info:");
         
-        JButton button = new JButton("Confirm");
+        JButton button = new JButton("Login");
         button.addActionListener(this);
         
         JPanel headerPanel = new JPanel();
@@ -49,7 +70,13 @@ public class Payforit extends JFrame implements ActionListener, MouseListener{
 }
 
     public void actionPerformed(ActionEvent event){
-
+        if (User.loginAdmin(userText.getText(), passText.getText())) {
+            new AdminOptionsGUI().setVisible(true);
+        }
+        else {
+            JOptionPane.showMessageDialog(rootPane, "Please Enter Valid Credentials", "Login Failed",  
+            JOptionPane.DEFAULT_OPTION);
+        }
         
     }
     
@@ -73,7 +100,7 @@ public class Payforit extends JFrame implements ActionListener, MouseListener{
     public static void main(String[] args) {
         
         EventQueue.invokeLater(() -> {
-            new Payforit().setVisible(true);        
+            new AdminGUI().setVisible(true);        
         });
     }
 

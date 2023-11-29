@@ -1,8 +1,9 @@
-package GUI;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import javax.swing.*;
+
 
 
 import java.awt.event.*;
@@ -36,7 +37,7 @@ public class Main extends JFrame implements ActionListener {
         adminLoginButton.addActionListener( new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event){
-                new CrewGUI().setVisible(true);
+                new AdminGUI().setVisible(true);
             }
         });
         JButton crewLoginButton = new JButton("Login as Crew");

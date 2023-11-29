@@ -1,4 +1,4 @@
-package GUI;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -11,8 +11,9 @@ import java.util.*;
 
 public class ViewFlights extends JFrame implements ActionListener, MouseListener{
     private JLabel definition;
-    private JTextArea textArea = new JTextArea("\tALL THE FLIGHTS\n\n\n\tFORMATTED FLIGHTS GO HERE\n\n\n\tVancouver to Montreal 8:30PM PST");
+    private JTextArea textArea;
     private String selection = "No Flight Selected";
+    private int index;
     
 
 
@@ -33,11 +34,6 @@ public class ViewFlights extends JFrame implements ActionListener, MouseListener
      * Sets up the graphical user interface.
      */
     public void setupGUI(){
-
-        
-        
-        definition = new JLabel("Available Filghts:");
-        
         JButton button = new JButton("Select Flight");
         button.addActionListener(this);
         
@@ -49,6 +45,36 @@ public class ViewFlights extends JFrame implements ActionListener, MouseListener
 
         JPanel submitPanel = new JPanel();
         submitPanel.setLayout(new FlowLayout());
+
+        String textString = "";
+        DatabaseConnection dbConnection = DatabaseConnection.getInstance();
+        dbConnection.createConnection();
+        List<String> flights = dbConnection.getFlightDetails();
+        for (int i = 0; i < flights.size(); i++) {
+            JButton flightButton = new JButton(flights.get(i));
+            flightButton.setBounds(20, 40, 125, 25);
+            index = i;
+
+            flightButton.addActionListener( new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent event){
+                    String[] options = {"CONFIRM", "CANCEL"};
+                    int optionSelected =JOptionPane.showOptionDialog(rootPane, "Confirmation: " + flights.get(i),
+                    "Confirmation", JOptionPane.DEFAULT_OPTION, JOptionPane.DEFAULT_OPTION, null, options, options[0]);
+                    if (optionSelected == 0) {
+                        new Payforit().setVisible(true);
+                    }
+                }
+    
+            });
+            clientPanel.add(flightButton);
+        }
+        textArea = new JTextArea(textString);
+        
+        
+        definition = new JLabel("Available Filghts:");
+        
+
         
         headerPanel.add(definition);
 
@@ -60,12 +86,12 @@ public class ViewFlights extends JFrame implements ActionListener, MouseListener
         
 
  
-        textArea.setEditable(false);  
-        textArea.setLineWrap(true);  
-        textArea.setWrapStyleWord(true); 
-        JScrollPane scroll = new JScrollPane(textArea);
-        scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        this.add(scroll, BorderLayout.CENTER);
+        // textArea.setEditable(false);  
+        // textArea.setLineWrap(true);  
+        // textArea.setWrapStyleWord(true); 
+        // JScrollPane scroll = new JScrollPane(textArea);
+        // scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        // this.add(scroll, BorderLayout.CENTER);
     }
     
 
