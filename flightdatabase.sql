@@ -44,14 +44,14 @@ CREATE TABLE passengers (
     PassengerName VARCHAR(50),
     SeatNumber INT,
     UserID INT,
-    Refund BOOLEAN,
+    Refund VARCHAR(50),
     FOREIGN KEY (FlightID) REFERENCES flights(FlightID),
     FOREIGN KEY (UserID) REFERENCES users(UserID)
 );
 
 INSERT INTO passengers (FlightID, PassengerName, SeatNumber, UserID, Refund)
 VALUES
-	(1, 'test', 12, 1, True);
+	(1, 'test', 12, 1, 'True');
     
 INSERT INTO crew (CrewID, Email, Pass, CrewName, CrewRole, CrewNumber)
 VALUES

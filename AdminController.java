@@ -6,20 +6,20 @@ public class AdminController {
         dbConnection = DatabaseConnection.getInstance();
     }
 
-    public void selectCrew(int flightID, String newCrew,  int CrewNumber) {
-        dbConnection.selectCrew(flightID, newCrew, CrewNumber);
+    public void selectCrew(String newCrew,  int CrewNumber) {
+        dbConnection.selectCrew(newCrew, CrewNumber);
     }
 
-    public void selectAircraft(int flightID, String newAircraft) {
-        dbConnection.selectAircraft(flightID, newAircraft);
+    public void updateAircraft(int flightID, String newAircraft) {
+        dbConnection.updateAircraft(flightID, newAircraft);
     }
 
     public void modifyFlightPlan(int flightID, String attribute, String newValue) {
         dbConnection.updateFlight(flightID, attribute, newValue);
     }
 
-    public void addFlight(int flightID, String origin, String destination, String crew, String aircraft) {
-        dbConnection.addFlight(flightID, origin, destination, crew, aircraft);
+    public void addFlight(String origin, String destination, double seatPrice, String aircraft, int crewID, int maxSeat, String flightDate, String flightTime) {
+        dbConnection.addFlight(origin, destination, seatPrice, aircraft, crewID, maxSeat, flightDate, flightTime);
     }
 
     public void removeFlight(int flightID) {

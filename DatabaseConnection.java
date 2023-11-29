@@ -83,7 +83,7 @@ public class DatabaseConnection {
         }
     }
 
-    public void selectAircraft(int flightID, String newAircraft) {
+    public void updateAircraft(int flightID, String newAircraft) {
         try (PreparedStatement preparedStatement = dbConnect.prepareStatement(
                 "UPDATE flights SET Aircraft = ? WHERE FlightID = ?")) {
             preparedStatement.setString(1, newAircraft);
@@ -95,9 +95,9 @@ public class DatabaseConnection {
         }
     }
 
-    public void addFlight(String origin, String destination, double seatPrice, String aircraft, int crewID, int maxSeat) {
+    public void addFlight(String origin, String destination, double seatPrice, String aircraft, int crewID, int maxSeat, String flightDate, String flightTime) {
         try (PreparedStatement preparedStatement = dbConnect.prepareStatement(
-                "INSERT INTO flights (Origin, Destination, SeatPrice, Aircraft, CrewID, MaxSeat) VALUES (?, ?, ?, ?, ?, ?)")) {
+                "INSERT INTO flights (Origin, Destination, SeatPrice, Aircraft, CrewID, MaxSeat, FlightDate, FlightTime) VALUES (?, ?, ?, ?, ?, ?, ?, ?)")) {
             // preparedStatement.setInt(1, flightID);
             preparedStatement.setString(1, origin);
             preparedStatement.setString(2, destination);
@@ -105,6 +105,8 @@ public class DatabaseConnection {
             preparedStatement.setString(4, aircraft);
             preparedStatement.setInt(5, crewID);
             preparedStatement.setInt(6, maxSeat);
+            preparedStatement.setString(7, flightDate);
+            preparedStatement.setString(8, flightTime);
             preparedStatement.executeUpdate();
             dbConnect.commit();
         } catch (SQLException e) {

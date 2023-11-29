@@ -21,7 +21,6 @@ public class Crew {
             while (resultSet.next()) {
                 String passengerName = resultSet.getString("PassengerName");
                 int seatNumber = resultSet.getInt("SeatNumber");
-
                 System.out.println("Passenger: " + passengerName + ", Seat Number: " + seatNumber);
             }
         } catch (SQLException e) {
