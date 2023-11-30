@@ -33,7 +33,7 @@ public class DatabaseConnection {
         return dbConnect;
     }
 
-    public void insertUser(String fullname, String email, String address, String passkey) {
+    public void insertUser(String fullname, String email, String address, String passkey, String membership) {
         if (dbConnect == null) {
             System.out.println("Connection not established.");
             return;
@@ -42,8 +42,8 @@ public class DatabaseConnection {
         try {
             Statement statement = dbConnect.createStatement();
             String query = String.format(
-                "INSERT INTO users (Fullname, Email, Address, Passkey) VALUES ('%s', '%s', '%s', '%s')",
-                fullname, email, address, passkey
+                "INSERT INTO users (Fullname, Email, Address, Passkey, Membership) VALUES ('%s', '%s', '%s', '%s, %s')",
+                fullname, email, address, passkey, membership
             );
             statement.executeUpdate(query);
             dbConnect.commit();

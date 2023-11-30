@@ -29,7 +29,8 @@ CREATE TABLE users (
     Fullname VARCHAR(50) NOT NULL,
     Email VARCHAR(50) NOT NULL,
     Address VARCHAR(50) NOT NULL,
-    Passkey VARCHAR(50) NOT NULL
+    Passkey VARCHAR(50) NOT NULL,
+    Membership VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE admins (
@@ -84,12 +85,12 @@ VALUES
 	('ronair', 2769, 'flyaway'),
     ('davidson5', 2841, 'restricted');
 
-INSERT INTO users (Fullname, Email, Address, Passkey)
+INSERT INTO users (Fullname, Email, Address, Passkey, Membership)
 VALUES
-    ('John Doe', 'johndoe2@gmail.com', '3214 Ave, T2N 4V2', 'secretpassword'),
-    ('Steve Jobs', 'steveiscool@yahoo.com', '12th Street, T1N 5V7','apple'),
-    ('James Smith', 'jsmith1@yahoo.com', '8425 Ave NW, T9S 4V5','jsmith'),
-    ('Thomas Brown', 'thomasbrown@gmail.com', '120 Bremner Blvd, M5J 0A8','brownthomas');
+    ('John Doe', 'johndoe2@gmail.com', '3214 Ave, T2N 4V2', 'secretpassword', 'False'),
+    ('Steve Jobs', 'steveiscool@yahoo.com', '12th Street, T1N 5V7','apple','True'),
+    ('James Smith', 'jsmith1@yahoo.com', '8425 Ave NW, T9S 4V5','jsmith', 'True'),
+    ('Thomas Brown', 'thomasbrown@gmail.com', '120 Bremner Blvd, M5J 0A8','brownthomas', 'False');
     
 
 INSERT INTO flights (Origin, Destination, SeatPrice, Aircraft, CrewID, Maxseat, FlightDate, FlightTime)
