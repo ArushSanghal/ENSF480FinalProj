@@ -9,13 +9,16 @@ import java.awt.event.*;
 import java.awt.FlowLayout;
 import java.util.*;
 
-public class Payforit extends JFrame implements ActionListener, MouseListener{
+public class SeatSelectGUI extends JFrame implements ActionListener, MouseListener{
     private JLabel definition;
+    private String flight;
+    int availableSeats = 52;
 
-        public Payforit(){
-        super("Payment");
+        public SeatSelectGUI(String flight){
+        super("Seat Select");
+        this.flight = flight;
         setupGUI();
-        setSize(900,600);
+        setSize(250,600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
         setLocationRelativeTo(null);    
         addMouseListener(this);
@@ -25,7 +28,7 @@ public class Payforit extends JFrame implements ActionListener, MouseListener{
 
         
         
-        definition = new JLabel("Enter Payment Info:");
+        definition = new JLabel("Select Seat:");
         
         JButton button = new JButton("Confirm");
         button.addActionListener(this);
@@ -41,7 +44,26 @@ public class Payforit extends JFrame implements ActionListener, MouseListener{
         
         headerPanel.add(definition);
 
-        submitPanel.add(button);
+        // submitPanel.add(button);
+        for (int i = 0; i  < availableSeats; i++) {
+            JButton flightButton = new JButton(Integer.toString(i + 1) + ' ');
+            flightButton.setBounds(20, 40, 125, 25);
+            final int index = i;
+
+            flightButton.addActionListener( new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent event){
+                    String[] options = {"CONFIRM", "CANCEL"};
+                    int optionSelected =JOptionPane.showOptionDialog(rootPane, "Confirmation: Seat " + index,
+                    "Confirmation", JOptionPane.DEFAULT_OPTION, JOptionPane.DEFAULT_OPTION, null, options, options[0]);
+                    if (optionSelected == 0) {
+                        new PaymentGUI(index).setVisible(true);
+                    }
+                }
+    
+            });
+            clientPanel.add(flightButton);
+        }
         
         this.add(headerPanel, BorderLayout.NORTH);
         this.add(clientPanel, BorderLayout.CENTER);
@@ -73,7 +95,7 @@ public class Payforit extends JFrame implements ActionListener, MouseListener{
     public static void main(String[] args) {
         
         EventQueue.invokeLater(() -> {
-            new Payforit().setVisible(true);        
+            new SeatSelectGUI("wooo").setVisible(true);        
         });
     }
 

@@ -12,8 +12,8 @@ import java.util.*;
 public class ViewFlights extends JFrame implements ActionListener, MouseListener{
     private JLabel definition;
     private JTextArea textArea;
-    private String selection = "No Flight Selected";
-    private int index;
+   
+
     
 
 
@@ -53,16 +53,16 @@ public class ViewFlights extends JFrame implements ActionListener, MouseListener
         for (int i = 0; i < flights.size(); i++) {
             JButton flightButton = new JButton(flights.get(i));
             flightButton.setBounds(20, 40, 125, 25);
-            index = i;
+            final int index = i;
 
             flightButton.addActionListener( new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent event){
                     String[] options = {"CONFIRM", "CANCEL"};
-                    int optionSelected =JOptionPane.showOptionDialog(rootPane, "Confirmation: " + flights.get(i),
+                    int optionSelected =JOptionPane.showOptionDialog(rootPane, "Confirmation: " + flights.get(index),
                     "Confirmation", JOptionPane.DEFAULT_OPTION, JOptionPane.DEFAULT_OPTION, null, options, options[0]);
                     if (optionSelected == 0) {
-                        new Payforit().setVisible(true);
+                        new SeatSelectGUI(flights.get(index)).setVisible(true);
                     }
                 }
     
@@ -78,7 +78,7 @@ public class ViewFlights extends JFrame implements ActionListener, MouseListener
         
         headerPanel.add(definition);
 
-        submitPanel.add(button);
+        // submitPanel.add(button);
         
         this.add(headerPanel, BorderLayout.NORTH);
         this.add(clientPanel, BorderLayout.CENTER);
@@ -96,18 +96,7 @@ public class ViewFlights extends JFrame implements ActionListener, MouseListener
     
 
     public void actionPerformed(ActionEvent event){
-        String[] options = {"CONFIRM", "CANCEL"};
-        if (selection != "No Flight Selected") {
-            int optionSelected =JOptionPane.showOptionDialog(rootPane, "Confirmation: " + selection,
-            "Confirmation", JOptionPane.DEFAULT_OPTION, JOptionPane.DEFAULT_OPTION, null, options, options[0]);
-            if (optionSelected == 0) {
-                new Payforit().setVisible(true);
-            }
-        }
-        else {
-            JOptionPane.showMessageDialog(rootPane, "Please Select a Flight", "Selection Failed",  
-            JOptionPane.DEFAULT_OPTION);
-        }
+
         
     }
     
@@ -123,13 +112,7 @@ public class ViewFlights extends JFrame implements ActionListener, MouseListener
     }
 
     public void mouseReleased(MouseEvent event){
-        if (textArea.getSelectedText() != null) { // See if they selected something 
-            this.selection = textArea.getSelectedText();
-            
-        }
-        else {
-            this.selection = "No Flight Selected";
-        }
+
 
     }
     

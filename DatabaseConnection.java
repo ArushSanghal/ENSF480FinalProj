@@ -22,7 +22,7 @@ public class DatabaseConnection {
     }
     public void createConnection() {
         try {
-            dbConnect = DriverManager.getConnection("jdbc:mysql://localhost:3306/FLIGHTDATABASE", "root", "aaa");
+            dbConnect = DriverManager.getConnection("jdbc:mysql://localhost:3306/FLIGHTDATABASE", "root", "Luxray00*");
             dbConnect.setAutoCommit(false);
         } catch (SQLException e) {
             e.printStackTrace();
