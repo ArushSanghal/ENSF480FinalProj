@@ -7,6 +7,7 @@ public class User{
     private String email;
     private Address address;
     private String userPassword;
+    private String membership;
     private String adminUsername;
     private int adminID;
     private String adminPassword;
@@ -17,7 +18,7 @@ public class User{
         this.email = em;
         this.address = ad;
         this.userPassword = pass;
-
+        this.membership = "False";
     }
 
     public User(String admName, String pass, int adminID){  
@@ -31,9 +32,9 @@ public class User{
         this.userPassword = pass;
     }
 
-    public void regUser(){
+    public void regUser(String inputName, String inputEmail, String inputAddress, String inputPass, String isMember){
         db = new DatabaseConnection();
-        db.insertUser(fullName, email, address, userPassword);
+        db.insertUser(inputName, inputEmail, inputAddress, inputPass, isMember);
     }
 
     public boolean loginUser(String inputEmail, String inputPass){
