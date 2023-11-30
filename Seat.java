@@ -40,24 +40,34 @@ public class Seat{
         return seats +1;
     }
 
-  /*   public boolean seatChecker(String seatIDInput){
+    public boolean seatChecker(int flightID, int seatNumber) {
         DatabaseConnection db = DatabaseConnection.getInstance();
-
-        List<String> seatsAvail = db.extractSeatID();
-
-        if (seatsAvail.contains(seatIDInput)){
+        boolean isSeatTaken = db.isSeatTaken(flightID, seatNumber);
+    
+        if (isSeatTaken) {
             System.out.println("Seat Taken");
             return false;
         }
-        System.out.println("Seat Booked");
+    
+        System.out.println("Seat Available");
         return true;
-    }*/
-
+    }
+    
     public static void main(String[] args) {
         try {
-            int testFlightID = 15;
             DatabaseConnection db = DatabaseConnection.getInstance();
             db.createConnection();
+            int testFlightID = 15;
+            int testSeatNumber = 5;
+    
+            Seat seat = new Seat("", 10);
+            boolean isSeatAvailable = seat.seatChecker(testFlightID, testSeatNumber);
+    
+            if (isSeatAvailable) {
+                System.out.println("Booking the seat...");
+            } else {
+                System.out.println("Seat already taken. Choose another seat.");
+            }
             db.bookSeatAndUpdateMaxseat(testFlightID);
             db.close();
         } catch (Exception e) {

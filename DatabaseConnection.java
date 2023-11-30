@@ -295,6 +295,23 @@ public void bookSeatAndUpdateMaxseat(int flightID) throws Exception {
 
 
 
+public boolean isSeatTaken(int flightID, int seatNumber) {
+    try {
+        String query = "SELECT * FROM passengers WHERE FlightID = ? AND SeatNumber = ?";
+        PreparedStatement preparedStatement = dbConnect.prepareStatement(query);
+        preparedStatement.setInt(1, flightID);
+        preparedStatement.setInt(2, seatNumber);
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        return resultSet.next(); 
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false; 
+    }
+}
+
+
 
 
 
