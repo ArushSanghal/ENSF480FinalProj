@@ -40,7 +40,7 @@ public class Seat{
         return seats +1;
     }
 
-    public boolean seatChecker(String seatIDInput){
+  /*   public boolean seatChecker(String seatIDInput){
         DatabaseConnection db = DatabaseConnection.getInstance();
 
         List<String> seatsAvail = db.extractSeatID();
@@ -51,6 +51,19 @@ public class Seat{
         }
         System.out.println("Seat Booked");
         return true;
+    }*/
+
+    public static void main(String[] args) {
+        try {
+            int testFlightID = 15;
+            DatabaseConnection db = DatabaseConnection.getInstance();
+            db.createConnection();
+            db.bookSeatAndUpdateMaxseat(testFlightID);
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+    
     
 }

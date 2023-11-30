@@ -261,9 +261,37 @@ public void addFlight(String origin, String destination, double seatPrice, Strin
 
 
 
+////////////////////////////////////////////////////////////////////////////////////UPDATING THE SEATS AFTER USER SELECT FLIGHTS//////////////////////////////////////////////////////
 
 
+public void bookSeatAndUpdateMaxseat(int flightID) throws Exception {
+    try {
+        String query = "SELECT Maxseat FROM flights WHERE FlightID = ?";
+        PreparedStatement preparedStatement = dbConnect.prepareStatement(query);
+        preparedStatement.setInt(1, flightID);
 
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        if (resultSet.next()) {
+            int maxseat = resultSet.getInt("Maxseat");
+            Seat seat = new Seat("", maxseat);
+            int updatedMaxseat = seat.seatTaken(maxseat);
+            String updateQuery = "UPDATE flights SET Maxseat = ? WHERE FlightID = ?";
+            PreparedStatement updateStatement = dbConnect.prepareStatement(updateQuery);
+            updateStatement.setInt(1, updatedMaxseat);
+            updateStatement.setInt(2, flightID);
+            updateStatement.executeUpdate();
+            dbConnect.commit();
+            System.out.println("Seat booked successfully. Updated Maxseat: " + updatedMaxseat);
+        } else {
+            System.out.println("Flight not found");
+        }
+    } catch (SQLException e) {
+            e.printStackTrace();
+        }
+}
+
+///////////////////////////////////////////////////////////SEAT CHECKER/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
