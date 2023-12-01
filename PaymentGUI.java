@@ -13,6 +13,7 @@ import java.util.*;
 public class PaymentGUI extends JFrame implements ActionListener, MouseListener{
     private JLabel definition;
     private int seat;
+    private double price;
     private String flight;
     private String email;
     private JTextField userText;
@@ -22,11 +23,12 @@ public class PaymentGUI extends JFrame implements ActionListener, MouseListener{
     private JLabel insuranceLabel;
     private JTextField insuranceText;
 
-        public PaymentGUI(int seat, String flight, String email){
+        public PaymentGUI(int seat, String flight, String email, double price){
         super("Seat Select");
         this.seat = seat;
         this.flight = flight;
         this.email = email;
+        this.price = price;
         setupGUI();
         setSize(600,400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
@@ -97,7 +99,7 @@ public class PaymentGUI extends JFrame implements ActionListener, MouseListener{
         submitPanel.add(button);
         DatabaseConnection dbConnection = DatabaseConnection.getInstance();
         dbConnection.getConnection();
-        double price = dbConnection.getPrice(Integer.valueOf(flight));
+        
         String member = dbConnection.isMember(email);
         if (member.equals("True")) {
             price = price - 10;
@@ -132,7 +134,7 @@ public class PaymentGUI extends JFrame implements ActionListener, MouseListener{
         "Confirmation", JOptionPane.DEFAULT_OPTION, JOptionPane.DEFAULT_OPTION, null, options, options[0]);
         if (optionSelected == 0) {
             dbConnection.insertPassengers(Integer.valueOf(flight), name, seat, cancel);
-            dbConnection.bookSeatAndUpdateMaxseat(Integer.valueOf(flight));
+            // dbConnection.bookSeatAndUpdateMaxseat(Integer.valueOf(flight));
             JOptionPane.showMessageDialog(rootPane, "Thank you for booking your flight!", "Success",  
             JOptionPane.DEFAULT_OPTION);
             JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor((Component) event.getSource()); 
@@ -158,12 +160,7 @@ public class PaymentGUI extends JFrame implements ActionListener, MouseListener{
     }
     
     
-    public static void main(String[] args) {
-        
-        EventQueue.invokeLater(() -> {
-            new PaymentGUI(1, "1", "email").setVisible(true);        
-        });
-    }
+
 
     
     public void mouseClicked(MouseEvent e) {

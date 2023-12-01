@@ -16,6 +16,7 @@ public class SeatSelectGUI extends JFrame implements ActionListener, MouseListen
     private String flight;
     private String email;
     private int availableSeats;
+    private int counter =0;
 
         public SeatSelectGUI(String flight, String email){
         super("Seat Select");
@@ -51,12 +52,15 @@ public class SeatSelectGUI extends JFrame implements ActionListener, MouseListen
         dbConnection.createConnection();
         availableSeats = dbConnection.numSeats(Integer.valueOf(flight));
         submitPanel.add(button);
-        for (int i = 0; i  < availableSeats; i++) {
-            JButton flightButton = new JButton(Integer.toString(i + 1) + ' ');
+        for (int i = 0; i  < availableSeats * 0.1; i++) {
+            JButton flightButton = new JButton(Integer.toString(counter + 1) + ' ');
             flightButton.setBounds(20, 40, 125, 25);
-            final int index = i + 1;
+            final int index = counter + 1;
             if (dbConnection.isSeatTaken(Integer.valueOf(flight), index)) {
                 flightButton.setBackground(Color.RED);
+            }
+            else {
+                flightButton.setBackground(Color.GREEN);
             }
  
             flightButton.addActionListener( new ActionListener() {
@@ -64,12 +68,57 @@ public class SeatSelectGUI extends JFrame implements ActionListener, MouseListen
                 public void actionPerformed(ActionEvent event){
                     String[] options = {"CONFIRM", "CANCEL"};
                     if (!dbConnection.isSeatTaken(Integer.valueOf(flight), index)) {
-                        int optionSelected =JOptionPane.showOptionDialog(rootPane, "Confirmation: Seat " + index,
+                        DatabaseConnection dbConnection = DatabaseConnection.getInstance();
+                        dbConnection.createConnection();
+                        double price = dbConnection.getPrice(Integer.valueOf(flight));
+                        price = price * 2.1;
+                        int optionSelected =JOptionPane.showOptionDialog(rootPane, "Confirmation: Seat " + index + ". This is a Business Class Seat, Price: " + price ,
                         "Confirmation", JOptionPane.DEFAULT_OPTION, JOptionPane.DEFAULT_OPTION, null, options, options[0]);
                         if (optionSelected == 0) {
                             JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor((Component) event.getSource()); 
                             currentFrame.dispose();
-                            new PaymentGUI(index, flight, email).setVisible(true);
+                            new PaymentGUI(index, flight, email, price).setVisible(true);
+                        }
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(rootPane, "Seat is taken please select another seat", "Seat Taken",  
+                        JOptionPane.DEFAULT_OPTION);
+                    }
+                    
+                }
+
+                
+    
+            });
+            clientPanel.add(flightButton);
+            counter++;
+        }
+        for (int i = 0; i  < availableSeats * 0.205; i++) {
+            JButton flightButton = new JButton(Integer.toString(counter + 1) + ' ');
+            flightButton.setBounds(20, 40, 125, 25);
+            final int index = counter + 1;
+            if (dbConnection.isSeatTaken(Integer.valueOf(flight), index)) {
+                flightButton.setBackground(Color.RED);
+            }
+            else {
+                flightButton.setBackground(Color.YELLOW);
+            }
+ 
+            flightButton.addActionListener( new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent event){
+                    String[] options = {"CONFIRM", "CANCEL"};
+                    if (!dbConnection.isSeatTaken(Integer.valueOf(flight), index)) {
+                        DatabaseConnection dbConnection = DatabaseConnection.getInstance();
+                        dbConnection.createConnection();
+                        double price = dbConnection.getPrice(Integer.valueOf(flight));
+                        price = price * 1.4;
+                        int optionSelected =JOptionPane.showOptionDialog(rootPane, "Confirmation: Seat " + index + ". This is a Comfort Class Seat, Price: " + price,
+                        "Confirmation", JOptionPane.DEFAULT_OPTION, JOptionPane.DEFAULT_OPTION, null, options, options[0]);
+                        if (optionSelected == 0) {
+                            JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor((Component) event.getSource()); 
+                            currentFrame.dispose();
+                            new PaymentGUI(index, flight, email, price).setVisible(true);
                         }
                     }
                     else {
@@ -81,6 +130,44 @@ public class SeatSelectGUI extends JFrame implements ActionListener, MouseListen
     
             });
             clientPanel.add(flightButton);
+            counter++;
+        }
+
+        for (int i = 0; i  < availableSeats * 0.68; i++) {
+            JButton flightButton = new JButton(Integer.toString(counter + 1) + ' ');
+            flightButton.setBounds(20, 40, 125, 25);
+            final int index = counter + 1;
+            if (dbConnection.isSeatTaken(Integer.valueOf(flight), index)) {
+                flightButton.setBackground(Color.RED);
+            }
+
+ 
+            flightButton.addActionListener( new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent event){
+                    String[] options = {"CONFIRM", "CANCEL"};
+                    if (!dbConnection.isSeatTaken(Integer.valueOf(flight), index)) {
+                        DatabaseConnection dbConnection = DatabaseConnection.getInstance();
+                        dbConnection.createConnection();
+                        double price = dbConnection.getPrice(Integer.valueOf(flight));
+                        int optionSelected =JOptionPane.showOptionDialog(rootPane, "Confirmation: Seat " + index + ". This is an Ordinary Class Seat, Price: " + price,
+                        "Confirmation", JOptionPane.DEFAULT_OPTION, JOptionPane.DEFAULT_OPTION, null, options, options[0]);
+                        if (optionSelected == 0) {
+                            JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor((Component) event.getSource()); 
+                            currentFrame.dispose();
+                            new PaymentGUI(index, flight, email, price).setVisible(true);
+                        }
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(rootPane, "Seat is taken please select another seat", "Seat Taken",  
+                        JOptionPane.DEFAULT_OPTION);
+                    }
+                    
+                }
+    
+            });
+            clientPanel.add(flightButton);
+            counter++;
         }
         
         this.add(headerPanel, BorderLayout.NORTH);
