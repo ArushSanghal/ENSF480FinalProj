@@ -98,8 +98,15 @@ public class PaymentGUI extends JFrame implements ActionListener, MouseListener{
         DatabaseConnection dbConnection = DatabaseConnection.getInstance();
         dbConnection.getConnection();
         double price = dbConnection.getPrice(Integer.valueOf(flight));
+        String member = dbConnection.isMember(email);
+        if (member.equals("True")) {
+            price = price - 10;
+            JLabel discountLabel = new JLabel("10 Dollar Discount Because of Membership!");
+            discountLabel.setBounds(180, 190, 300, 25);
+            this.add(discountLabel);
+        }
         JLabel priceLabel = new JLabel("Price: " + price);
-        priceLabel.setBounds(20, 160, 260, 25);
+        priceLabel.setBounds(180, 160, 260, 25);
         this.add(priceLabel);
 
 

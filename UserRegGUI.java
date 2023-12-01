@@ -20,6 +20,8 @@ public class UserRegGUI extends JFrame implements ActionListener, MouseListener{
     private JLabel nameLabel;
     private JTextField addressText;
     private JLabel addressLabel;
+    private JTextField memberText;
+    private JLabel memberLabel;
     private boolean valid;
     
     
@@ -71,6 +73,14 @@ public class UserRegGUI extends JFrame implements ActionListener, MouseListener{
         addressText.setBounds(180, 130, 165, 25);
         this.add(addressText);
 
+        memberLabel = new JLabel("Become a Memebr? (Yes/No):");
+        memberLabel.setBounds(20, 160, 260, 25);
+        this.add(memberLabel);
+
+        memberText = new JTextField(20);
+        memberText.setBounds(260, 160, 165, 25);
+        this.add(memberText);
+
 
         
         JButton button = new JButton("Register");
@@ -100,8 +110,15 @@ public class UserRegGUI extends JFrame implements ActionListener, MouseListener{
         JOptionPane.DEFAULT_OPTION);
         DatabaseConnection dbConnection = DatabaseConnection.getInstance();
         dbConnection.createConnection();
+        String ismember;
+        if (memberText.getText().toUpperCase().equals("YES")) {
+            ismember = "True";
+        }
+        else {
+            ismember = "False";
+        }
 
-        dbConnection.insertUser(nameText.getText(), userText.getText(), addressText.getText(), passText.getText());
+        dbConnection.insertUser(nameText.getText(), userText.getText(), addressText.getText(), passText.getText(), ismember);
         
         
     }

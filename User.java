@@ -31,10 +31,10 @@ public class User{
         this.userPassword = pass;
     }
 
-    public void regUser(){
-        db = DatabaseConnection.getInstance();
-        db.insertUser(fullName, email, address, userPassword);
-    }
+    // public void regUser(){
+    //     db = DatabaseConnection.getInstance();
+    //     db.insertUser(fullName, email, address, userPassword);
+    // }
 
     public static boolean loginUser(String inputEmail, String inputPass){
         db = DatabaseConnection.getInstance();

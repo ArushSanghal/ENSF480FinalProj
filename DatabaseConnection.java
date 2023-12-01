@@ -22,7 +22,7 @@ public class DatabaseConnection {
     }
     public void createConnection() {
         try {
-            dbConnect = DriverManager.getConnection("jdbc:mysql://localhost:3306/FLIGHTDATABASE", "root", "Luxray00*");
+            dbConnect = DriverManager.getConnection("jdbc:mysql://localhost:3306/FLIGHTDATABASE", "root", "lol");
             dbConnect.setAutoCommit(false);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -62,7 +62,7 @@ public class DatabaseConnection {
     return flightDetailsList;
 }
 
-    public void insertUser(String fullname, String email, String address, String passkey) {
+    public void insertUser(String fullname, String email, String address, String passkey, String member) {
         if (dbConnect == null) {
             System.out.println("Connection not established.");
             return;
@@ -71,8 +71,8 @@ public class DatabaseConnection {
         try {
             Statement statement = dbConnect.createStatement();
             String query = String.format(
-                "INSERT INTO users (Fullname, Email, Address, Passkey) VALUES ('%s', '%s', '%s', '%s')",
-                fullname, email, address, passkey
+                "INSERT INTO users (Fullname, Email, Address, Passkey, Membership) VALUES ('%s', '%s', '%s', '%s', '%s')",
+                fullname, email, address, passkey, member
             );
             statement.executeUpdate(query);
             dbConnect.commit();
@@ -842,6 +842,22 @@ public double getPrice(int flightID) {
     } catch (SQLException e) {
         e.printStackTrace();
         return -1; 
+    }
+}
+
+public String isMember(String email) {
+    try {
+        String query = "SELECT Membership FROM users WHERE email = ? ";
+        PreparedStatement preparedStatement = dbConnect.prepareStatement(query);
+        preparedStatement.setString(1, email);
+        
+        ResultSet resultSet = preparedStatement.executeQuery();
+        resultSet.next();
+
+        return resultSet.getString("Membership"); 
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return ""; 
     }
 }
 
