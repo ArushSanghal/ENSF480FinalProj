@@ -12,14 +12,20 @@ import java.util.*;
 public class PaymentGUI extends JFrame implements ActionListener, MouseListener{
     private JLabel definition;
     private int seat;
+    private String flight;
+    private String email;
     private JTextField userText;
     private JLabel userLabel;
     private JLabel passLabel;
     private JTextField passText;
+    private JLabel insuranceLabel;
+    private JTextField insuranceText;
 
-        public PaymentGUI(int seat){
+        public PaymentGUI(int seat, String flight, String email){
         super("Seat Select");
         this.seat = seat;
+        this.flight = flight;
+        this.email = email;
         setupGUI();
         setSize(600,400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
@@ -64,6 +70,14 @@ public class PaymentGUI extends JFrame implements ActionListener, MouseListener{
         passText = new JTextField(20);
         passText.setBounds(360, 100, 30, 25);
         this.add(passText);
+
+        insuranceLabel = new JLabel("Cancellation Insurance? (Yes/No):");
+        insuranceLabel.setBounds(20, 130, 260, 25);
+        this.add(insuranceLabel);
+
+        insuranceText = new JTextField(20);
+        insuranceText.setBounds(260, 130, 165, 25);
+        this.add(insuranceText);
         
         JButton button = new JButton("Make Payment");
         button.addActionListener(this);
@@ -90,7 +104,23 @@ public class PaymentGUI extends JFrame implements ActionListener, MouseListener{
     public void actionPerformed(ActionEvent event){
         DatabaseConnection dbConnection = DatabaseConnection.getInstance();
         dbConnection.getConnection();
-        dbConnection.insertPassengers(not done);
+        String cancel;
+        String name = dbConnection.getNameFromEmail(email);
+        if (insuranceText.getText().toUpperCase().equals("YES")) {
+            cancel = "yes";
+        }
+        else {
+            cancel = "no";
+        }
+
+        String[] options = {"CONFIRM", "CANCEL"};
+        int optionSelected =JOptionPane.showOptionDialog(rootPane, "Confirm Payment",
+        "Confirmation", JOptionPane.DEFAULT_OPTION, JOptionPane.DEFAULT_OPTION, null, options, options[0]);
+        if (optionSelected == 0) {
+            dbConnection.insertPassengers(Integer.valueOf(flight), name, seat, cancel);
+            JOptionPane.showMessageDialog(rootPane, "Thank you for booking your flight!", "Success",  
+            JOptionPane.DEFAULT_OPTION);
+        }   
         
     }
     
@@ -114,7 +144,7 @@ public class PaymentGUI extends JFrame implements ActionListener, MouseListener{
     public static void main(String[] args) {
         
         EventQueue.invokeLater(() -> {
-            new PaymentGUI(1).setVisible(true);        
+            new PaymentGUI(1, "1", "email").setVisible(true);        
         });
     }
 

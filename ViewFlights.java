@@ -11,6 +11,7 @@ import java.util.*;
 
 public class ViewFlights extends JFrame implements ActionListener, MouseListener{
     private JLabel definition;
+    private String email;
     private JTextArea textArea;
    
 
@@ -20,8 +21,9 @@ public class ViewFlights extends JFrame implements ActionListener, MouseListener
     /**
      * Constructs a new GUI object.
      */
-    public ViewFlights(){
+    public ViewFlights(String email){
         super("View Available Flights");
+        this.email = email;
         setupGUI();
         setSize(900,600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
@@ -50,6 +52,7 @@ public class ViewFlights extends JFrame implements ActionListener, MouseListener
         DatabaseConnection dbConnection = DatabaseConnection.getInstance();
         dbConnection.createConnection();
         List<String> flights = dbConnection.getFlightDetails();
+        List<String> ids = dbConnection.getFlightIDs();
         for (int i = 0; i < flights.size(); i++) {
             JButton flightButton = new JButton(flights.get(i));
             flightButton.setBounds(20, 40, 125, 25);
@@ -62,7 +65,7 @@ public class ViewFlights extends JFrame implements ActionListener, MouseListener
                     int optionSelected =JOptionPane.showOptionDialog(rootPane, "Confirmation: " + flights.get(index),
                     "Confirmation", JOptionPane.DEFAULT_OPTION, JOptionPane.DEFAULT_OPTION, null, options, options[0]);
                     if (optionSelected == 0) {
-                        new SeatSelectGUI(flights.get(index)).setVisible(true);
+                        new SeatSelectGUI(ids.get(index), email).setVisible(true);
                     }
                 }
     
@@ -120,7 +123,7 @@ public class ViewFlights extends JFrame implements ActionListener, MouseListener
     public static void main(String[] args) {
         
         EventQueue.invokeLater(() -> {
-            new ViewFlights().setVisible(true);        
+            new ViewFlights("yoyoyo").setVisible(true);        
         });
     }
 

@@ -391,7 +391,7 @@ public class DatabaseConnection {
 
 
 
-    public void insertPassengers(int FlightID, String PassengerName, int SeatNumber, int UserID) {
+    public void insertPassengers(int FlightID, String PassengerName, int SeatNumber, String cancel) {
         if (dbConnect == null) {
             System.out.println("Connection not established.");
             return;
@@ -399,10 +399,30 @@ public class DatabaseConnection {
         try {
             Statement statement = dbConnect.createStatement();
             String query = String.format(
-                "INSERT INTO passengers (FlightID, PassengerName, SeatNumber, UserID) VALUES ('%d', '%s', '%d', '%d')",
-                FlightID, PassengerName, SeatNumber, UserID
+                "INSERT INTO passengers (FlightID, PassengerName, SeatNumber, Refund) VALUES ('%d', '%s', '%d', '%s')",
+                FlightID, PassengerName, SeatNumber, cancel
             );
             statement.executeUpdate(query);
+            dbConnect.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deletePassengers(int FlightID, String name) {
+        if (dbConnect == null) {
+            System.out.println("Connection not established.");
+            return;
+        }
+        try {
+            String query ="DELETE FROM passengers WHERE FlightID = ? AND PassengerName = ?";
+            PreparedStatement preparedStatement = dbConnect.prepareStatement(query);
+            preparedStatement.setInt(1, FlightID);
+            preparedStatement.setString(2, name);
+            
+                
+            
+            preparedStatement.executeUpdate();
             dbConnect.commit();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -625,8 +645,110 @@ public class DatabaseConnection {
 
         return id;
     }
-    
-    
+
+    public List<String> getFlightIDs() {
+        List<String> flightDetailsList = new ArrayList<>();
+
+        try {
+            String query = "SELECT FlightID FROM flights";
+            try (PreparedStatement preparedStatement = dbConnect.prepareStatement(query);
+                ResultSet resultSet = preparedStatement.executeQuery()) {
+
+                while (resultSet.next()) {
+                    String id = resultSet.getString("FlightID");
+
+
+                    String flightDetails = id;
+
+                    flightDetailsList.add(flightDetails);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return flightDetailsList;
+    }
+
+    public String getNameFromEmail(String email) {
+        String name;
+
+        try {
+            String query = "SELECT Fullname FROM users WHERE Email = ?";
+            PreparedStatement preparedStatement = dbConnect.prepareStatement(query);
+            preparedStatement.setString(1, email);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            name = resultSet.getString(1);
+
+
+            
+        } catch (SQLException e) {
+            name = "";
+            e.printStackTrace();
+        }
+
+        return name;
+    }
+
+    public List<String> getFlightsToCancel(List<String> ids) {
+    List<String> flightDetailsList = new ArrayList<>();
+
+    try {
+        for (int i = 0; i < ids.size(); i ++) {
+            String query = "SELECT Origin, Destination, SeatPrice, Maxseat, FlightDate, FlightTime FROM flights WHERE FlightID = ?";
+            PreparedStatement preparedStatement = dbConnect.prepareStatement(query);
+            preparedStatement.setInt(1, Integer.valueOf(ids.get(i)));
+            ResultSet resultSet = preparedStatement.executeQuery() ;
+
+                while (resultSet.next()) {
+                    String origin = resultSet.getString("Origin");
+                    String destination = resultSet.getString("Destination");
+                    double seatPrice = resultSet.getDouble("SeatPrice");
+                    int maxSeat = resultSet.getInt("Maxseat");
+                    Date flightDate = resultSet.getDate("FlightDate");
+                    Time flightTime = resultSet.getTime("FlightTime");
+
+                    String flightDetails = String.format("Origin: %s, Destination: %s, Seat Price: %.2f, Max Seats: %d, Flight Date: %s, Flight Time: %s",
+                            origin, destination, seatPrice, maxSeat, flightDate, flightTime);
+
+                    flightDetailsList.add(flightDetails);
+            }
+        }
+        
+        }
+     catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return flightDetailsList;
+}
+
+public List<String> getFlightIDsToCancel(String name) {
+    List<String> flightIDsList = new ArrayList<>();
+
+    try {
+        String query = "SELECT FlightID FROM passengers WHERE PassengerName = ? AND Refund = ?";
+        PreparedStatement preparedStatement = dbConnect.prepareStatement(query);
+        preparedStatement.setString(1, name);
+        preparedStatement.setString(2, "yes");
+        ResultSet resultSet = preparedStatement.executeQuery() ;
+
+            while (resultSet.next()) {
+
+                String flightID = Integer.toString(resultSet.getInt("FlightID"));
+
+
+                flightIDsList.add(flightID);
+            }
+        }
+     catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return flightIDsList;
+}
 
 }
+
     

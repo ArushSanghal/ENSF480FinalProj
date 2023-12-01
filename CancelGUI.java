@@ -9,30 +9,35 @@ import java.awt.event.*;
 import java.awt.FlowLayout;
 import java.util.*;
 
-public class SeatSelectGUI extends JFrame implements ActionListener, MouseListener{
+public class CancelGUI extends JFrame implements ActionListener, MouseListener{
     private JLabel definition;
-    private String flight;
     private String email;
-    int availableSeats = 52;
+    private JTextField userText;
+    private JLabel userLabel;
+    private JLabel passLabel;
+    private JTextField passText;
 
-        public SeatSelectGUI(String flight, String email){
-        super("Seat Select");
-        this.flight = flight;
+
+        public CancelGUI(String email){
+        super("User");
         this.email = email;
         setupGUI();
-        setSize(250,600);
+        setSize(400,200);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
         setLocationRelativeTo(null);    
         addMouseListener(this);
         
     }
      public void setupGUI(){
+        DatabaseConnection dbConnection = DatabaseConnection.getInstance();
+        dbConnection.createConnection();
 
-        
-        
-        definition = new JLabel("Select Seat:");
-        
-        JButton button = new JButton("Confirm");
+        String name = dbConnection.getNameFromEmail(email);
+        List<String> cancellableIds = dbConnection.getFlightIDsToCancel(name);
+        List<String> cancellableFlights = dbConnection.getFlightsToCancel(cancellableIds);
+        definition = new JLabel("Enter Login Info:");
+
+        JButton button = new JButton("Login");
         button.addActionListener(this);
         
         JPanel headerPanel = new JPanel();
@@ -43,12 +48,8 @@ public class SeatSelectGUI extends JFrame implements ActionListener, MouseListen
 
         JPanel submitPanel = new JPanel();
         submitPanel.setLayout(new FlowLayout());
-        
-        headerPanel.add(definition);
-
-        submitPanel.add(button);
-        for (int i = 0; i  < availableSeats; i++) {
-            JButton flightButton = new JButton(Integer.toString(i + 1) + ' ');
+        for (int i = 0; i < cancellableFlights.size(); i++) {
+            JButton flightButton = new JButton(cancellableFlights.get(i));
             flightButton.setBounds(20, 40, 125, 25);
             final int index = i;
 
@@ -56,10 +57,12 @@ public class SeatSelectGUI extends JFrame implements ActionListener, MouseListen
                 @Override
                 public void actionPerformed(ActionEvent event){
                     String[] options = {"CONFIRM", "CANCEL"};
-                    int optionSelected =JOptionPane.showOptionDialog(rootPane, "Confirmation: Seat " + index,
+                    int optionSelected =JOptionPane.showOptionDialog(rootPane, "Cancel: " + cancellableFlights.get(index),
                     "Confirmation", JOptionPane.DEFAULT_OPTION, JOptionPane.DEFAULT_OPTION, null, options, options[0]);
                     if (optionSelected == 0) {
-                        new PaymentGUI(index, flight, email).setVisible(true);
+                        dbConnection.deletePassengers(Integer.valueOf(cancellableIds.get(index)), name);
+                        JOptionPane.showMessageDialog(rootPane, "Flight Cancelled Successfully.", "Success",  
+                        JOptionPane.DEFAULT_OPTION);
                     }
                 }
     
@@ -67,14 +70,25 @@ public class SeatSelectGUI extends JFrame implements ActionListener, MouseListen
             clientPanel.add(flightButton);
         }
         
+        headerPanel.add(definition);
+
+        submitPanel.add(button);
+        
         this.add(headerPanel, BorderLayout.NORTH);
         this.add(clientPanel, BorderLayout.CENTER);
         this.add(submitPanel, BorderLayout.PAGE_END);
 }
 
     public void actionPerformed(ActionEvent event){
+  
 
-        
+        if (User.loginUser(userText.getText(), passText.getText())) {
+            new UserSelectGUI(userText.getText()).setVisible(true);
+        }
+        else {
+            JOptionPane.showMessageDialog(rootPane, "Please Enter Valid Credentials", "Login Failed",  
+            JOptionPane.DEFAULT_OPTION);
+        }
     }
     
     public void mouseEntered(MouseEvent event){
@@ -97,7 +111,7 @@ public class SeatSelectGUI extends JFrame implements ActionListener, MouseListen
     public static void main(String[] args) {
         
         EventQueue.invokeLater(() -> {
-            new SeatSelectGUI("wooo", "email").setVisible(true);        
+            new UserGUI().setVisible(true);        
         });
     }
 

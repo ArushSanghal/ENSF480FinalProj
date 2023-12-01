@@ -9,16 +9,18 @@ import java.awt.event.*;
 import java.awt.FlowLayout;
 import java.util.*;
 
-public class UserGUI extends JFrame implements ActionListener, MouseListener{
+public class UserSelectGUI extends JFrame implements ActionListener, MouseListener{
     private JLabel definition;
+    private String email;
     private JTextField userText;
     private JLabel userLabel;
     private JLabel passLabel;
     private JTextField passText;
 
 
-        public UserGUI(){
+        public UserSelectGUI(String email){
         super("User");
+        this.email = email;
         setupGUI();
         setSize(400,200);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
@@ -28,27 +30,8 @@ public class UserGUI extends JFrame implements ActionListener, MouseListener{
     }
      public void setupGUI(){
 
-        
-        
-        definition = new JLabel("Enter Login Info:");
-        userLabel = new JLabel("Enter Your Email:");
-        userLabel.setBounds(20, 40, 125, 25);
-        this.add(userLabel);
+        definition = new JLabel("Please Select an Option:");
 
-        userText = new JTextField(20);
-        userText.setBounds(180, 40, 165, 25);
-        this.add(userText);
-        
-        passLabel = new JLabel("Enter Your Password:");
-        passLabel.setBounds(20, 70, 125, 25);
-        this.add(passLabel);
-
-        passText = new JTextField(20);
-        passText.setBounds(180, 70, 165, 25);
-        this.add(passText);
-        
-        JButton button = new JButton("Login");
-        button.addActionListener(this);
         
         JPanel headerPanel = new JPanel();
         headerPanel.setLayout(new FlowLayout());
@@ -58,27 +41,35 @@ public class UserGUI extends JFrame implements ActionListener, MouseListener{
 
         JPanel submitPanel = new JPanel();
         submitPanel.setLayout(new FlowLayout());
+        JButton bookFlightButton = new JButton("Book a Flight");
+        bookFlightButton.addActionListener( new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent event){
+                new ViewFlights(email).setVisible(true);
+            }
+
+        });
+        JButton cancelFlightButton = new JButton("Cancel a Flight");
+        cancelFlightButton.addActionListener( new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent event){
+                new CancelGUI(email).setVisible(true);
+            }
+        });
         
         headerPanel.add(definition);
+        clientPanel.add(bookFlightButton);
+        clientPanel.add(cancelFlightButton);
 
-        submitPanel.add(button);
+
         
         this.add(headerPanel, BorderLayout.NORTH);
         this.add(clientPanel, BorderLayout.CENTER);
         this.add(submitPanel, BorderLayout.PAGE_END);
 }
 
-    public void actionPerformed(ActionEvent event){
-  
+    public void actionPerformed(ActionEvent event){}
 
-        if (User.loginUser(userText.getText(), passText.getText())) {
-            new UserSelectGUI(userText.getText()).setVisible(true);
-        }
-        else {
-            JOptionPane.showMessageDialog(rootPane, "Please Enter Valid Credentials", "Login Failed",  
-            JOptionPane.DEFAULT_OPTION);
-        }
-    }
     
     public void mouseEntered(MouseEvent event){
         
