@@ -7,6 +7,7 @@ public class User{
     private String email;
     private String address;
     private String userPassword;
+    private String membership;
     private String adminUsername;
     private int adminID;
     private String adminPassword;
@@ -17,7 +18,7 @@ public class User{
         this.email = em;
         this.address = ad;
         this.userPassword = pass;
-
+        this.membership = "False";
     }
 
     public User(String admName, String pass, int adminID){  
