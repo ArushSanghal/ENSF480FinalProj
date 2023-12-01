@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.awt.FlowLayout;
 import java.util.*;
+import java.awt.Component;
 
 public class Main extends JFrame implements ActionListener {
     private JLabel definition;
@@ -29,7 +30,11 @@ public class Main extends JFrame implements ActionListener {
         userLoginButton.addActionListener( new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event){
+                JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor((Component) event.getSource()); 
+                currentFrame.dispose();
                 new UserGUI().setVisible(true);
+
+                
             }
 
         });
@@ -37,6 +42,8 @@ public class Main extends JFrame implements ActionListener {
         adminLoginButton.addActionListener( new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event){
+                JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor((Component) event.getSource()); 
+                currentFrame.dispose();
                 new AdminGUI().setVisible(true);
             }
         });
@@ -44,6 +51,8 @@ public class Main extends JFrame implements ActionListener {
         crewLoginButton.addActionListener( new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event){
+                JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor((Component) event.getSource()); 
+                currentFrame.dispose();
                 new CrewGUI().setVisible(true);
             }
         });
@@ -51,6 +60,8 @@ public class Main extends JFrame implements ActionListener {
         userRegButton.addActionListener( new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event){
+                JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor((Component) event.getSource()); 
+                currentFrame.dispose();
                 new UserRegGUI().setVisible(true);
             }
         });

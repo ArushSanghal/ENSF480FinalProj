@@ -3,6 +3,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import javax.swing.*;
+import java.awt.Component;
 
 
 import java.awt.event.*;
@@ -72,6 +73,8 @@ public class UserGUI extends JFrame implements ActionListener, MouseListener{
   
 
         if (User.loginUser(userText.getText(), passText.getText())) {
+            JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor((Component) event.getSource()); 
+            currentFrame.dispose();
             new UserSelectGUI(userText.getText()).setVisible(true);
         }
         else {

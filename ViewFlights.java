@@ -3,6 +3,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import javax.swing.*;
+import java.awt.Component;
 
 
 import java.awt.event.*;
@@ -65,6 +66,8 @@ public class ViewFlights extends JFrame implements ActionListener, MouseListener
                     int optionSelected =JOptionPane.showOptionDialog(rootPane, "Confirmation: " + flights.get(index),
                     "Confirmation", JOptionPane.DEFAULT_OPTION, JOptionPane.DEFAULT_OPTION, null, options, options[0]);
                     if (optionSelected == 0) {
+                        JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor((Component) event.getSource()); 
+                        currentFrame.dispose();
                         new SeatSelectGUI(ids.get(index), email).setVisible(true);
                     }
                 }

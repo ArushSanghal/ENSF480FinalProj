@@ -409,16 +409,17 @@ public class DatabaseConnection {
         }
     }
 
-    public void deletePassengers(int FlightID, String name) {
+    public void deletePassengers(int FlightID, String name, int seat) {
         if (dbConnect == null) {
             System.out.println("Connection not established.");
             return;
         }
         try {
-            String query ="DELETE FROM passengers WHERE FlightID = ? AND PassengerName = ?";
+            String query ="DELETE FROM passengers WHERE FlightID = ? AND PassengerName = ? AND SeatNumber = ?";
             PreparedStatement preparedStatement = dbConnect.prepareStatement(query);
             preparedStatement.setInt(1, FlightID);
             preparedStatement.setString(2, name);
+            preparedStatement.setInt(3, seat);
             
                 
             
@@ -747,6 +748,101 @@ public List<String> getFlightIDsToCancel(String name) {
     }
 
     return flightIDsList;
+}
+
+public void bookSeatAndUpdateMaxseat(int flightID) {
+    try {
+        String query = "SELECT Maxseat FROM flights WHERE FlightID = ?";
+        PreparedStatement preparedStatement = dbConnect.prepareStatement(query);
+        preparedStatement.setInt(1, flightID);
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        if (resultSet.next()) {
+            int maxseat = resultSet.getInt("Maxseat");
+            Seat seat = new Seat("", maxseat);
+            int updatedMaxseat = seat.seatTaken(maxseat);
+            String updateQuery = "UPDATE flights SET Maxseat = ? WHERE FlightID = ?";
+            PreparedStatement updateStatement = dbConnect.prepareStatement(updateQuery);
+            updateStatement.setInt(1, updatedMaxseat);
+            updateStatement.setInt(2, flightID);
+            updateStatement.executeUpdate();
+            dbConnect.commit();
+            System.out.println("Seat booked successfully. Updated Maxseat: " + updatedMaxseat);
+        } else {
+            System.out.println("Flight not found");
+        }
+    } catch (SQLException e) {
+            e.printStackTrace();
+        }
+}
+
+///////////////////////////////////////////////////////////SEAT CHECKER/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+public boolean isSeatTaken(int flightID, int seatNumber) {
+    try {
+        String query = "SELECT * FROM passengers WHERE FlightID = ? AND SeatNumber = ?";
+        PreparedStatement preparedStatement = dbConnect.prepareStatement(query);
+        preparedStatement.setInt(1, flightID);
+        preparedStatement.setInt(2, seatNumber);
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        return resultSet.next(); 
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false; 
+    }
+}
+
+public int numSeats(int flightID) {
+    try {
+        String query = "SELECT Maxseat FROM flights WHERE FlightID = ?";
+        PreparedStatement preparedStatement = dbConnect.prepareStatement(query);
+        preparedStatement.setInt(1, flightID);
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+        resultSet.next();
+
+        return resultSet.getInt("Maxseat"); 
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return -1; 
+    }
+}
+
+public int getSeat(int flightID, String name) {
+    try {
+        String query = "SELECT SeatNumber FROM passengers WHERE FlightID = ? AND PassengerName = ?";
+        PreparedStatement preparedStatement = dbConnect.prepareStatement(query);
+        preparedStatement.setInt(1, flightID);
+        preparedStatement.setString(2, name);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        resultSet.next();
+
+        return resultSet.getInt("SeatNumber"); 
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return -1; 
+    }
+}
+
+public double getPrice(int flightID) {
+    try {
+        String query = "SELECT SeatPrice FROM flights WHERE FlightID = ? ";
+        PreparedStatement preparedStatement = dbConnect.prepareStatement(query);
+        preparedStatement.setInt(1, flightID);
+        
+        ResultSet resultSet = preparedStatement.executeQuery();
+        resultSet.next();
+
+        return resultSet.getDouble("SeatPrice"); 
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return -1; 
+    }
 }
 
 }

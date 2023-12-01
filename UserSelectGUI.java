@@ -3,6 +3,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import javax.swing.*;
+import java.awt.Component;
 
 
 import java.awt.event.*;
@@ -45,6 +46,8 @@ public class UserSelectGUI extends JFrame implements ActionListener, MouseListen
         bookFlightButton.addActionListener( new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event){
+            JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor((Component) event.getSource()); 
+            currentFrame.dispose();
                 new ViewFlights(email).setVisible(true);
             }
 
@@ -53,6 +56,8 @@ public class UserSelectGUI extends JFrame implements ActionListener, MouseListen
         cancelFlightButton.addActionListener( new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event){
+            JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor((Component) event.getSource()); 
+            currentFrame.dispose();
                 new CancelGUI(email).setVisible(true);
             }
         });

@@ -3,6 +3,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import javax.swing.*;
+import java.awt.Component;
 
 
 import java.awt.event.*;
@@ -94,6 +95,12 @@ public class PaymentGUI extends JFrame implements ActionListener, MouseListener{
         headerPanel.add(definition);
 
         submitPanel.add(button);
+        DatabaseConnection dbConnection = DatabaseConnection.getInstance();
+        dbConnection.getConnection();
+        double price = dbConnection.getPrice(Integer.valueOf(flight));
+        JLabel priceLabel = new JLabel("Price: " + price);
+        priceLabel.setBounds(20, 160, 260, 25);
+        this.add(priceLabel);
 
 
         this.add(headerPanel, BorderLayout.NORTH);
@@ -118,8 +125,11 @@ public class PaymentGUI extends JFrame implements ActionListener, MouseListener{
         "Confirmation", JOptionPane.DEFAULT_OPTION, JOptionPane.DEFAULT_OPTION, null, options, options[0]);
         if (optionSelected == 0) {
             dbConnection.insertPassengers(Integer.valueOf(flight), name, seat, cancel);
+            dbConnection.bookSeatAndUpdateMaxseat(Integer.valueOf(flight));
             JOptionPane.showMessageDialog(rootPane, "Thank you for booking your flight!", "Success",  
             JOptionPane.DEFAULT_OPTION);
+            JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor((Component) event.getSource()); 
+            currentFrame.dispose();
         }   
         
     }
