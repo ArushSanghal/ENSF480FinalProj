@@ -84,7 +84,7 @@ public class CrewGUI extends JFrame implements ActionListener, MouseListener{
         textArea.setWrapStyleWord(true); 
         JScrollPane scroll = new JScrollPane(textArea);
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        scroll.setPreferredSize( new Dimension( 300, 400 ) );
+        scroll.setPreferredSize(new Dimension(300, 400));
         JOptionPane.showMessageDialog(rootPane, scroll, "Passengers on flight " + flightID + ":",  
                                                         JOptionPane.DEFAULT_OPTION);
         }

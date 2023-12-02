@@ -22,7 +22,7 @@ public class DatabaseConnection {
     }
     public void createConnection() {
         try {
-            dbConnect = DriverManager.getConnection("jdbc:mysql://localhost:3306/FLIGHTDATABASE", "root", "lol");
+            dbConnect = DriverManager.getConnection("jdbc:mysql://localhost:3306/FLIGHTDATABASE", "root", "Luxray00*");
             dbConnect.setAutoCommit(false);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -53,6 +53,31 @@ public class DatabaseConnection {
                         origin, destination, seatPrice, maxSeat, flightDate, flightTime);
 
                 flightDetailsList.add(flightDetails);
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return flightDetailsList;
+}
+
+public List<Flight> getFlights() {
+    List<Flight> flightDetailsList = new ArrayList<>();
+
+    try {
+        String query = "SELECT Origin, Destination, SeatPrice, Maxseat, FlightDate, FlightTime FROM flights";
+        try (PreparedStatement preparedStatement = dbConnect.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            while (resultSet.next()) {
+                String origin = resultSet.getString("Origin");
+                String destination = resultSet.getString("Destination");
+
+
+                Flight flight =  new Flight(destination, origin);
+
+                flightDetailsList.add(flight);
             }
         }
     } catch (SQLException e) {
@@ -130,6 +155,44 @@ public class DatabaseConnection {
                 e.printStackTrace();
             }
             return resultSet;
+        }
+
+        public String adminBrowseUsers() {
+            String result = "";
+            try {
+                String query = "SELECT Fullname, Email, Address FROM users";
+                PreparedStatement preparedStatement = dbConnect.prepareStatement(query);
+                    
+                    ResultSet resultSet = preparedStatement.executeQuery();
+                    while (resultSet.next()) {
+                        result += resultSet.getString("Fullname") + " ";
+                        result += resultSet.getString("Email")+ " ";
+                        result += resultSet.getString("Address");
+                        result += "\n";    
+                    }
+                    
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return result;
+        }
+        public String adminBrowseAircrafts() {
+            String result = "";
+            try {
+                String query = "SELECT Aircraft FROM flights";
+                PreparedStatement preparedStatement = dbConnect.prepareStatement(query);
+                    
+                    ResultSet resultSet = preparedStatement.executeQuery();
+                    while (resultSet.next()) {
+                        
+                        result += resultSet.getString("Aircraft");
+                        result += "\n";    
+                    }
+                    
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return result;
         }
     
         public ResultSet browseAdmins(String username, int adminId) {

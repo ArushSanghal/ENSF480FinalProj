@@ -1,8 +1,8 @@
 import java.awt.Graphics;
 
-public class Decorator implements Component {
+public class Decorator implements OurComponent {
 
-    private Component cmp;
+    private OurComponent cmp;
     private int width;
     public int height;
 
@@ -23,12 +23,12 @@ public class Decorator implements Component {
     }
 
 
-    public Component getCmp() {
+    public OurComponent getCmp() {
         return cmp;
     }
 
 
-    public void setCmp(Component cmp) {
+    public void setCmp(OurComponent cmp) {
         this.cmp = cmp;
     }
 

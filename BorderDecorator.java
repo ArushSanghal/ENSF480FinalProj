@@ -6,7 +6,7 @@ import java.awt.Stroke;
 
 public class BorderDecorator extends Decorator {
 
-    public BorderDecorator(Component t, int w, int h){
+    public BorderDecorator(OurComponent t, int w, int h){
 
         setCmp(t);
         setWidth(w);

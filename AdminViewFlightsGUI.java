@@ -10,21 +10,21 @@ import java.awt.event.*;
 import java.awt.FlowLayout;
 import java.util.*;
 
-public class ViewFlights extends JFrame implements ActionListener, MouseListener{
+public class AdminViewFlightsGUI extends JFrame implements ActionListener, MouseListener{
     private JLabel definition;
-    private String email;
-    private JTextArea textArea;
-   
+    private AdminController adminController = new AdminController();
 
+    private JTextArea textArea;
+    private boolean isRemoving;
     
 
 
     /**
      * Constructs a new GUI object.
      */
-    public ViewFlights(String email){
+    public AdminViewFlightsGUI(boolean isRemoving){
         super("View Available Flights");
-        this.email = email;
+        this.isRemoving = isRemoving;
         setupGUI();
         setSize(900,600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
@@ -55,27 +55,52 @@ public class ViewFlights extends JFrame implements ActionListener, MouseListener
         List<String> flights = dbConnection.getFlightDetails();
         List<String> ids = dbConnection.getFlightIDs();
         List<Flight> theFlights = dbConnection.getFlights();
-        for (int i = 0; i < flights.size(); i++) {
-            JButton flightButton = new JButton(flights.get(i));
-            flightButton.setBounds(20, 40, 125, 25);
-            final int index = i;
+        if (!isRemoving) {
+            for (int i = 0; i < flights.size(); i++) {
+                JButton flightButton = new JButton(flights.get(i));
+                flightButton.setBounds(20, 40, 125, 25);
+                final int index = i;
 
-            flightButton.addActionListener( new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent event){
-                    String[] options = {"CONFIRM", "CANCEL"};
-                    int optionSelected =JOptionPane.showOptionDialog(rootPane, "Confirmation: " + flights.get(index),
-                    "Confirmation", JOptionPane.DEFAULT_OPTION, JOptionPane.DEFAULT_OPTION, null, options, options[0]);
-                    if (optionSelected == 0) {
-                        JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor((Component) event.getSource()); 
-                        currentFrame.dispose();
-                        new SeatSelectGUI(ids.get(index), email).setVisible(true);
+                flightButton.addActionListener( new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent event){
+                        String[] options = {"CONFIRM", "CANCEL"};
+                        int optionSelected =JOptionPane.showOptionDialog(rootPane, "Confirmation: " + flights.get(index),
+                        "Confirmation", JOptionPane.DEFAULT_OPTION, JOptionPane.DEFAULT_OPTION, null, options, options[0]);
+                        if (optionSelected == 0) {
+                            JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor((Component) event.getSource()); 
+                            currentFrame.dispose();
+                            new AdminFlightOptionsGUI(Integer.valueOf(ids.get(index))).setVisible(true);
+                        }
                     }
-                }
-    
-            });
-            clientPanel.add(flightButton);
+                });
+                clientPanel.add(flightButton);
+            }
         }
+        else {
+            for (int i = 0; i < flights.size(); i++) {
+                JButton flightButton = new JButton(flights.get(i));
+                flightButton.setBounds(20, 40, 125, 25);
+                final int index = i;
+
+                flightButton.addActionListener( new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent event){
+                        String[] options = {"CONFIRM", "CANCEL"};
+                        int optionSelected =JOptionPane.showOptionDialog(rootPane, "Confirmation: " + flights.get(index),
+                        "Confirmation", JOptionPane.DEFAULT_OPTION, JOptionPane.DEFAULT_OPTION, null, options, options[0]);
+                        if (optionSelected == 0) {
+                            JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor((Component) event.getSource()); 
+                            currentFrame.dispose();
+                            adminController.removeFlight(Integer.valueOf(ids.get(index)));
+                            
+                        }
+                    }
+                });
+                clientPanel.add(flightButton);
+        }
+    }
+        
         textArea = new JTextArea(textString);
         
         

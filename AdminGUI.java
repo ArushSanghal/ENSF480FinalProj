@@ -1,15 +1,10 @@
-
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.EventQueue;
 import javax.swing.*;
-
-
 import java.awt.event.*;
 import java.awt.FlowLayout;
-import java.util.*;
 
-public class AdminGUI extends JFrame implements ActionListener, MouseListener{
+
+public class AdminGUI extends JFrame implements ActionListener{
     private JLabel definition;
     private JTextField userText;
     private JLabel userLabel;
@@ -21,15 +16,14 @@ public class AdminGUI extends JFrame implements ActionListener, MouseListener{
         public AdminGUI(){
         super("Admin");
         setupGUI();
-        setSize(900,600);
+        setSize(400,200);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
         setLocationRelativeTo(null);    
-        addMouseListener(this);
         
     }
      public void setupGUI(){
 
-        userLabel = new JLabel("Enter Your Email:");
+        userLabel = new JLabel("Enter Your Password:");
         userLabel.setBounds(20, 40, 125, 25);
         this.add(userLabel);
 
@@ -80,32 +74,4 @@ public class AdminGUI extends JFrame implements ActionListener, MouseListener{
         
     }
     
-    public void mouseEntered(MouseEvent event){
-        
-    }
-
-    public void mouseExited(MouseEvent event){
-    }
-
-    public void mousePressed(MouseEvent event){
-        
-    }
-
-    public void mouseReleased(MouseEvent event){
-
-
-    }
-    
-    
-    public static void main(String[] args) {
-        
-        EventQueue.invokeLater(() -> {
-            new AdminGUI().setVisible(true);        
-        });
-    }
-
-    
-    public void mouseClicked(MouseEvent e) {
-        
-    }
 }

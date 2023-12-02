@@ -11,8 +11,10 @@ import java.awt.FlowLayout;
 import java.util.*;
 import java.awt.Component;
 
-public class Main extends JFrame implements ActionListener {
+public class Main extends JFrame implements ActionListener{
     private JLabel definition;
+    OurComponent t;
+    BorderDecorator deco = new BorderDecorator(t, 600, 300);
 
         public Main(){
         super("Group 7 Airlines");
