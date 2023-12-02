@@ -8,22 +8,32 @@ import javax.swing.*;
 
 import java.awt.event.*;
 import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.util.*;
 import java.awt.Component;
 
 public class Main extends JFrame implements ActionListener{
     private JLabel definition;
     OurComponent t;
-    BorderDecorator deco = new BorderDecorator(t, 600, 300);
+    // BorderDecorator deco = new BorderDecorator(t, 618, 340);
 
         public Main(){
         super("Group 7 Airlines");
+        t = new Text("Group 7 Airlines", 618, 340);
         setupGUI();
         setSize(600,300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
         setLocationRelativeTo(null);   
         
     }
+    public void paintComponent(Graphics g){
+		int fontSize = 10;
+		g.setFont(new Font("TimesRoman", Font.PLAIN, fontSize));
+		// GlassFrameDecorator info: x = 25, y = 25, width = 110, and height = 110
+		t = new BorderDecorator(t, 618,340);
+		t.draw(g);
+	}
      public void setupGUI(){
 
         definition = new JLabel("Welcome to Group 7 Airlines, Please select an option:");
@@ -83,6 +93,7 @@ public class Main extends JFrame implements ActionListener{
         clientPanel.add(adminLoginButton);
         clientPanel.add(crewLoginButton);
         clientPanel.add(userRegButton);
+        this.getContentPane().add(t);
         
         this.add(headerPanel, BorderLayout.NORTH);
         this.add(clientPanel, BorderLayout.CENTER);
